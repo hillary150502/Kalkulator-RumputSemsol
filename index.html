@@ -90,6 +90,27 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: white;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-control:hover {
+            border-color: #3498db;
+        }
+
         .btn {
             background: linear-gradient(45deg, #27ae60, #2ecc71);
             color: white;
@@ -127,7 +148,7 @@
 
         .result-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -223,7 +244,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌱 Sistem Kalkulasi Luas Rumput</h1>
+            <h1>🌱 Kalkulator Rumput Tol Semarang-Solo</h1>
             <p>Hitung luas rumput berdasarkan range lokasi KM secara otomatis</p>
         </div>
 
@@ -240,11 +261,18 @@
                         <input type="number" id="endKm" placeholder="contoh: 420500">
                     </div>
                     <div class="input-field">
+                        <label for="jalur">Jalur</label>
+                        <select id="jalur" class="form-control">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
+                    </div>
+                    <div class="input-field">
                         <button class="btn" onclick="calculateArea()">🔍 Hitung Luas</button>
                     </div>
                 </div>
             </div>
-
+            
             <div id="results" class="results" style="display: none;">
                 <div class="result-header">
                     <h2>📊 Hasil Kalkulasi</h2>
@@ -299,7 +327,7 @@
         const grassData = [
             {no: 1, start: 419400, end: 420300, jalur: 'A', lebar: 2.5, panjang: 900, luas: 2250, keterangan: 'Rounding'},
             {no: 2, start: 420300, end: 420800, jalur: 'A', lebar: 3.5, panjang: 500, luas: 1750, keterangan: 'Rounding'},
-            {no: 3, start: 420800, end: 421000, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Gerbang Banyumanik'},
+            {no: 3, start: 420800, end: 421000, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Gerbang Banyumanik '},
             {no: 4, start: 421000, end: 421200, jalur: 'A', lebar: 3.5, panjang: 200, luas: 700, keterangan: 'Rounding'},
             {no: 5, start: 421200, end: 421750, jalur: 'A', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Rounding'},
             {no: 6, start: 421875, end: 421900, jalur: 'A', lebar: 2.5, panjang: 25, luas: 62.5, keterangan: 'Rounding'},
@@ -320,353 +348,729 @@
             {no: 21, start: 430250, end: 430300, jalur: 'A', lebar: 4, panjang: 50, luas: 200, keterangan: 'Rounding'},
             {no: 22, start: 430300, end: 431400, jalur: 'A', lebar: 2.5, panjang: 1100, luas: 2750, keterangan: 'Rounding'},
             {no: 23, start: 431500, end: 431650, jalur: 'A', lebar: 2.5, panjang: 150, luas: 375, keterangan: 'Rounding'},
-            {no: 24, start: 431650, end: 432500, jalur: 'A', lebar: 6.5, panjang: 850, luas: 5525, keterangan: 'Rounding' },
-            {no: 25, start: 432500, end: 433000, jalur: 'A', lebar: 4, panjang: 500, luas: 2000, keterangan: 'Rounding' },
-            {no: 26, start: 433000, end: 433600, jalur: 'A', lebar: 2.5, panjang: 600, luas: 1500, keterangan: 'Rounding' },
-            {no: 27, start: 433600, end: 433800, jalur: 'A', lebar: 4.5, panjang: 200, luas: 900, keterangan: 'Rounding' },
-            {no: 28, start: 433800, end: 434500, jalur: 'A', lebar: 3.5, panjang: 700, luas: 2450, keterangan: 'Rounding' },
-            {no: 29, start: 434500, end: 434700, jalur: 'A', lebar: 3, panjang: 200, luas: 600, keterangan: 'Rounding' },
-            {no: 30, start: 434700, end: 434900, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding' },
-            {no: 31, start: 435150, end: 435700, jalur: 'A', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Rounding' },
-            {no: 32, start: 435700, end: 435950, jalur: 'A', lebar: 4.5, panjang: 250, luas: 1125, keterangan: 'Rounding' },
-            {no: 33, start: 435950, end: 436300, jalur: 'A', lebar: 3, panjang: 350, luas: 1050, keterangan: 'Rounding' },
-            {no: 34, start: 436500, end: 437000, jalur: 'A', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding' },
-            {no: 35, start: 437250, end: 438700, jalur: 'A', lebar: 3, panjang: 1450, luas: 4350, keterangan: 'Rounding' },
-            {no: 36, start: 438800, end: 440350, jalur: 'A', lebar: 3, panjang: 1550, luas: 4650, keterangan: 'Rounding' },
-            {no: 37, start: 441250, end: 441350, jalur: 'A', lebar: 2.5, panjang: 100, luas: 250, keterangan: 'Rounding' },
-            {no: 38, start: 441650, end: 442150, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Rounding' },
-            {no: 39, start: 442150, end: 442400, jalur: 'A', lebar: 12, panjang: 250, luas: 3000, keterangan: 'Rounding' },
-            {no: 40, start: 442400, end: 444300, jalur: 'A', lebar: 3, panjang: 1900, luas: 5700, keterangan: 'Rounding' },
-            {no: 41, start: 444650, end: 445700, jalur: 'A', lebar: 2.5, panjang: 1050, luas: 2625, keterangan: 'Rounding' },
-            {no: 42, start: 445700, end: 446200, jalur: 'A', lebar: 3.5, panjang: 500, luas: 1750, keterangan: 'Rounding' },
-            {no: 43, start: 446200, end: 448350, jalur: 'A', lebar: 2.5, panjang: 2150, luas: 5375, keterangan: 'Rounding' },
-            {no: 44, start: 448350, end: 450000, jalur: 'A', lebar: 3.5, panjang: 1650, luas: 5775, keterangan: 'Rounding' },
-            {no: 45, start: 450000, end: 451300, jalur: 'A', lebar: 2.5, panjang: 1300, luas: 3250, keterangan: 'Rounding' },
-            {no: 46, start: 451300, end: 452550, jalur: 'A', lebar: 3.5, panjang: 1250, luas: 4375, keterangan: 'Rounding' },
-            {no: 47, start: 452600, end: 452750, jalur: 'A', lebar: 3, panjang: 150, luas: 450, keterangan: 'Rounding' },
-            {no: 48, start: 453000, end: 453400, jalur: 'A', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Rounding' },
-            {no: 49, start: 454300, end: 455900, jalur: 'A', lebar: 3, panjang: 1600, luas: 4800, keterangan: 'Rounding' },
-            {no: 50, start: 455900, end: 456500, jalur: 'A', lebar: 2.5, panjang: 600, luas: 1500, keterangan: 'Rounding' },
-            {no: 51, start: 456500, end: 457100, jalur: 'A', lebar: 3.5, panjang: 600, luas: 2100, keterangan: 'Rounding' },
-            {no: 52, start: 457100, end: 457350, jalur: 'A', lebar: 5, panjang: 250, luas: 1250, keterangan: 'Rounding' },
-            {no: 53, start: 457350, end: 459100, jalur: 'A', lebar: 3.5, panjang: 1750, luas: 6125, keterangan: 'Rounding' },
-            {no: 54, start: 459100, end: 459200, jalur: 'A', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Rounding' },
-            {no: 55, start: 459200, end: 460000, jalur: 'A', lebar: 5, panjang: 800, luas: 4000, keterangan: 'Rounding Akses Salatiga' },
-            {no: 58, start: 460200, end: 460500, jalur: 'A', lebar: 3, panjang: 300, luas: 900, keterangan: 'Rounding Akses Salatiga' },
-            {no: 59, start: 460500, end: 460200, jalur: 'B', lebar: 3, panjang: 300, luas: 900, keterangan: 'Rounding Akses Salatiga' },
-            {no: 60, start: 460200, end: 459200, jalur: 'B', lebar: 4, panjang: 1000, luas: 4000, keterangan: 'Rounding Akses Salatiga' },
-            {no: 63, start: 459650, end: 459200, jalur: 'B', lebar: 3, panjang: 450, luas: 1350, keterangan: 'Rounding' },
-            {no: 64, start: 459200, end: 457400, jalur: 'B', lebar: 2.5, panjang: 1800, luas: 4500, keterangan: 'Rounding' },
-            {no: 65, start: 457400, end: 457100, jalur: 'B', lebar: 3, panjang: 300, luas: 900, keterangan: 'Rounding' },
-            {no: 66, start: 457100, end: 456250, jalur: 'B', lebar: 3, panjang: 850, luas: 2550, keterangan: 'Rounding' },
-            {no: 67, start: 456250, end: 454600, jalur: 'B', lebar: 3, panjang: 1650, luas: 4950, keterangan: 'Rounding' },
-            {no: 68, start: 454600, end: 454200, jalur: 'B', lebar: 4.5, panjang: 400, luas: 1800, keterangan: 'Rounding' },
-            {no: 69, start: 454200, end: 453900, jalur: 'B', lebar: 3, panjang: 300, luas: 900, keterangan: 'Rounding' },
-            {no: 70, start: 453900, end: 452500, jalur: 'B', lebar: 2.5, panjang: 1200, luas: 3000, keterangan: 'Rounding' },
-            {no: 71, start: 452500, end: 451850, jalur: 'B', lebar: 3, panjang: 650, luas: 1950, keterangan: 'Rounding' },
-            {no: 72, start: 451850, end: 450000, jalur: 'B', lebar: 2.5, panjang: 1850, luas: 4625, keterangan: 'Rounding' },
-            {no: 73, start: 450000, end: 448800, jalur: 'B', lebar: 3, panjang: 1200, luas: 3600, keterangan: 'Rounding' },
-            {no: 74, start: 448800, end: 446300, jalur: 'B', lebar: 2.5, panjang: 2500, luas: 6250, keterangan: 'Rounding' },
-            {no: 75, start: 446300, end: 445900, jalur: 'B', lebar: 3.5, panjang: 400, luas: 1400, keterangan: 'Rounding' },
-            {no: 76, start: 445900, end: 444650, jalur: 'B', lebar: 2.5, panjang: 1250, luas: 3125, keterangan: 'Rounding' },
-            {no: 77, start: 444300, end: 444250, jalur: 'B', lebar: 4, panjang: 50, luas: 200, keterangan: 'Rounding' },
-            {no: 78, start: 444250, end: 443300, jalur: 'B', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Rounding' },
-            {no: 79, start: 443300, end: 442200, jalur: 'B', lebar: 2.5, panjang: 1100, luas: 2750, keterangan: 'Rounding' },
-            {no: 80, start: 442000, end: 441700, jalur: 'B', lebar: 2.5, panjang: 300, luas: 750, keterangan: 'Rounding' },
-            {no: 81, start: 441400, end: 441175, jalur: 'B', lebar: 2.5, panjang: 225, luas: 562.5, keterangan: 'Rounding' },
-            {no: 82, start: 440300, end: 439150, jalur: 'B', lebar: 2.5, panjang: 1150, luas: 2875, keterangan: 'Rounding' },
-            {no: 83, start: 439150, end: 439100, jalur: 'B', lebar: 4, panjang: 50, luas: 200, keterangan: 'Rounding' },
-            {no: 84, start: 439100, end: 438825, jalur: 'B', lebar: 2.5, panjang: 275, luas: 687.5, keterangan: 'Rounding' },
-            {no: 85, start: 438825, end: 438625, jalur: 'B', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding' },
-            {no: 86, start: 438625, end: 437200, jalur: 'B', lebar: 2.5, panjang: 1425, luas: 3562.5, keterangan: 'Rounding' },
-            {no: 87, start: 437200, end: 436500, jalur: 'B', lebar: 2.5, panjang: 400, luas: 1000, keterangan: 'Rounding' },
-            {no: 88, start: 436500, end: 436400, jalur: 'B', lebar: 2, panjang: 100, luas: 200, keterangan: 'Rounding' },
-            {no: 89, start: 436400, end: 436200, jalur: 'B', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding' },
-            {no: 90, start: 436200, end: 435800, jalur: 'B', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Rounding' },
-            {no: 91, start: 435800, end: 435725, jalur: 'B', lebar: 5, panjang: 75, luas: 375, keterangan: 'Rounding' },
-            {no: 92, start: 435725, end: 434500, jalur: 'B', lebar: 2.5, panjang: 1225, luas: 3062.5, keterangan: 'Rounding' },
-            {no: 93, start: 434500, end: 434100, jalur: 'B', lebar: 4, panjang: 400, luas: 1600, keterangan: 'Rounding' },
-            {no: 94, start: 434100, end: 433575, jalur: 'B', lebar: 2, panjang: 525, luas: 1050, keterangan: 'Rounding' },
-            {no: 95, start: 433575, end: 433000, jalur: 'B', lebar: 2.5, panjang: 575, luas: 1437.5, keterangan: 'Rounding' },
-            {no: 96, start: 433000, end: 432950, jalur: 'B', lebar: 4, panjang: 50, luas: 200, keterangan: 'Rounding' },
-            {no: 97, start: 432950, end: 432550, jalur: 'B', lebar: 2.5, panjang: 400, luas: 1000, keterangan: 'Rounding' },
-            {no: 98, start: 432550, end: 431800, jalur: 'B', lebar: 5, panjang: 750, luas: 3750, keterangan: 'Rounding' },
-            {no: 99, start: 431800, end: 431350, jalur: 'B', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Rounding' },
-            {no: 100, start: 431350, end: 431100, jalur: 'B', lebar: 4, panjang: 250, luas: 1000, keterangan: 'Rounding' },
-            {no: 101, start: 431100, end: 427850, jalur: 'B', lebar: 2.5, panjang: 3250, luas: 8125, keterangan: 'Rounding' },
-            {no: 102, start: 427300, end: 426300, jalur: 'B', lebar: 2.5, panjang: 1000, luas: 2500, keterangan: 'Rounding' },
-            {no: 103, start: 425800, end: 422900, jalur: 'B', lebar: 2.5, panjang: 2900, luas: 7250, keterangan: 'Rounding' },
-            {no: 104, start: 422400, end: 422300, jalur: 'B', lebar: 5, panjang: 100, luas: 500, keterangan: 'Rounding' },
-            {no: 105, start: 421900, end: 421875, jalur: 'B', lebar: 2.5, panjang: 25, luas: 62.5, keterangan: 'Rounding' },
-            {no: 106, start: 421700, end: 421000, jalur: 'B', lebar: 2.5, panjang: 700, luas: 1750, keterangan: 'Rounding' },
-            {no: 107, start: 420800, end: 419600, jalur: 'B', lebar: 2.5, panjang: 1200, luas: 3000, keterangan: 'Rounding' },
-            {no: 108, start: 419525, end: 419400, jalur: 'B', lebar: 2.5, panjang: 125, luas: 312.5, keterangan: 'Rounding' },
-            {no: 111, start: 459500, end: 460600, jalur: 'A', lebar: 2.5, panjang: 1100, luas: 2750, keterangan: 'Rounding' },
-            {no: 112, start: 460600, end: 460800, jalur: 'A', lebar: 3.5, panjang: 200, luas: 700, keterangan: 'Rounding' },
-            {no: 113, start: 460800, end: 461000, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding' },
-            {no: 114, start: 461000, end: 462250, jalur: 'A', lebar: 3, panjang: 1250, luas: 3750, keterangan: 'Rounding' },
-            {no: 115, start: 462250, end: 463000, jalur: 'A', lebar: 3.5, panjang: 750, luas: 2625, keterangan: 'Rounding' },
-            {no: 116, start: 463000, end: 463800, jalur: 'A', lebar: 3.5, panjang: 800, luas: 2800, keterangan: 'Rounding' },
-            {no: 117, start: 463800, end: 464750, jalur: 'A', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Rounding' },
-            {no: 118, start: 464750, end: 466100, jalur: 'A', lebar: 3.5, panjang: 1350, luas: 4725, keterangan: 'Rounding' },
-            {no: 119, start: 466100, end: 467250, jalur: 'A', lebar: 3, panjang: 1150, luas: 3450, keterangan: 'Rounding' },
-            {no: 120, start: 467750, end: 468550, jalur: 'A', lebar: 3, panjang: 800, luas: 2400, keterangan: 'Rounding' },
-            {no: 121, start: 468550, end: 468850, jalur: 'A', lebar: 3.5, panjang: 300, luas: 1050, keterangan: 'Rounding' },
-            {no: 122, start: 468850, end: 469100, jalur: 'A', lebar: 3.5, panjang: 250, luas: 875, keterangan: 'Rounding' },
-            {no: 123, start: 469100, end: 469160, jalur: 'A', lebar: 3, panjang: 60, luas: 180, keterangan: 'Rounding' },
-            {no: 124, start: 469160, end: 469750, jalur: 'A', lebar: 3.5, panjang: 590, luas: 2065, keterangan: 'Rounding' },
-            {no: 125, start: 469750, end: 470000, jalur: 'A', lebar: 3.5, panjang: 250, luas: 875, keterangan: 'Rounding' },
-            {no: 126, start: 470000, end: 470500, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Rounding' },
-            {no: 127, start: 470500, end: 471200, jalur: 'A', lebar: 3.5, panjang: 700, luas: 2450, keterangan: 'Rounding' },
-            {no: 128, start: 471200, end: 471900, jalur: 'A', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Rounding' },
-            {no: 129, start: 472150, end: 474750, jalur: 'A', lebar: 3, panjang: 2600, luas: 7800, keterangan: 'Rounding' },
-            {no: 130, start: 474950, end: 475150, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding' },
-            {no: 131, start: 475150, end: 475600, jalur: 'A', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Rounding' },
-            {no: 132, start: 475700, end: 476650, jalur: 'A', lebar: 2.5, panjang: 950, luas: 2375, keterangan: 'Rounding' },
-            {no: 133, start: 476740, end: 477650, jalur: 'A', lebar: 1.5, panjang: 910, luas: 1365, keterangan: 'Rounding' },
-            {no: 134, start: 477700, end: 478200, jalur: 'A', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding' },
-            {no: 135, start: 478250, end: 479500, jalur: 'A', lebar: 2.5, panjang: 1250, luas: 3125, keterangan: 'Rounding' },
-            {no: 136, start: 479550, end: 480050, jalur: 'A', lebar: 6, panjang: 500, luas: 3000, keterangan: 'Rounding' },
-            {no: 137, start: 480100, end: 480650, jalur: 'A', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Rounding' },
-            {no: 138, start: 480800, end: 482450, jalur: 'A', lebar: 3, panjang: 1650, luas: 4950, keterangan: 'Rounding' },
-            {no: 139, start: 482500, end: 484100, jalur: 'A', lebar: 3, panjang: 1600, luas: 4800, keterangan: 'Rounding' },
-            {no: 142, start: 484100, end: 484500, jalur: 'A', lebar: 3.5, panjang: 400, luas: 1400, keterangan: 'Rounding' },
-            {no: 143, start: 484500, end: 485500, jalur: 'A', lebar: 3, panjang: 350, luas: 1050, keterangan: 'Rounding' },
-            {no: 144, start: 485500, end: 487400, jalur: 'A', lebar: 3, panjang: 2400, luas: 7200, keterangan: 'Rounding' },
-            {no: 145, start: 487400, end: 487600, jalur: 'A', lebar: 1, panjang: 200, luas: 200, keterangan: 'Rounding' },
-            {no: 146, start: 487600, end: 492000, jalur: 'A', lebar: 2.7, panjang: 4400, luas: 11880, keterangan: 'Rounding' },
-            {no: 147, start: 492000, end: 486950, jalur: 'B', lebar: 2.7, panjang: 400, luas: 1080, keterangan: 'Rounding' },
-            {no: 148, start: 486900, end: 486400, jalur: 'B', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Rounding' },
-            {no: 149, start: 486350, end: 484950, jalur: 'B', lebar: 3, panjang: 1400, luas: 4200, keterangan: 'Rounding' },
-            {no: 150, start: 484900, end: 484550, jalur: 'B', lebar: 3.5, panjang: 350, luas: 1225, keterangan: 'Rounding' },
-            {no: 151, start: 484500, end: 483500, jalur: 'B', lebar: 3.5, panjang: 1100, luas: 3850, keterangan: 'Rounding' },
-            {no: 154, start: 483400, end: 482500, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Rounding' },
-            {no: 155, start: 482500, end: 481650, jalur: 'B', lebar: 2.5, panjang: 850, luas: 2125, keterangan: 'Rounding' },
-            {no: 156, start: 481650, end: 480800, jalur: 'B', lebar: 3.5, panjang: 850, luas: 2975, keterangan: 'Rounding' },
-            {no: 157, start: 480700, end: 480500, jalur: 'B', lebar: 3.5, panjang: 200, luas: 700, keterangan: 'Rounding' },
-            {no: 158, start: 480000, end: 479500, jalur: 'B', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding' },
-            {no: 159, start: 480000, end: 479000, jalur: 'B', lebar: 3.5, panjang: 500, luas: 1750, keterangan: 'Rounding' },
-            {no: 160, start: 479500, end: 478250, jalur: 'B', lebar: 2.5, panjang: 1250, luas: 3125, keterangan: 'Rounding' },
-            {no: 161, start: 478200, end: 477700, jalur: 'B', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding' },
-            {no: 162, start: 477650, end: 476750, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Rounding' },
-            {no: 163, start: 476650, end: 475600, jalur: 'B', lebar: 2.5, panjang: 950, luas: 2375, keterangan: 'Rounding' },
-            {no: 164, start: 475600, end: 475500, jalur: 'B', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Rounding' },
-            {no: 165, start: 475150, end: 474950, jalur: 'B', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding' },
-            {no: 166, start: 474750, end: 473900, jalur: 'B', lebar: 3, panjang: 850, luas: 2550, keterangan: 'Rounding' },
-            {no: 167, start: 473900, end: 472150, jalur: 'B', lebar: 3, panjang: 1750, luas: 5250, keterangan: 'Rounding' },
-            {no: 168, start: 471950, end: 471150, jalur: 'B', lebar: 3, panjang: 800, luas: 2400, keterangan: 'Rounding' },
-            {no: 169, start: 471150, end: 467750, jalur: 'B', lebar: 3, panjang: 3400, luas: 10200, keterangan: 'Rounding' },
-            {no: 170, start: 467250, end: 466800, jalur: 'B', lebar: 3.5, panjang: 450, luas: 1575, keterangan: 'Rounding' },
-            {no: 171, start: 466800, end: 465050, jalur: 'B', lebar: 3, panjang: 1750, luas: 5250, keterangan: 'Rounding' },
-            {no: 172, start: 465050, end: 464300, jalur: 'B', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Rounding' },
-            {no: 173, start: 464300, end: 459500, jalur: 'B', lebar: 3, panjang: 4800, luas: 14400, keterangan: 'Rounding' },
-            {no: 174, start: 419825, end: 420250, jalur: 'A', lebar: 2.5, panjang: 425, luas: 1062.5, keterangan: 'Gulma' },
-            {no: 175, start: 419825, end: 420000, jalur: 'A', lebar: 2.5, panjang: 175, luas: 437.5, keterangan: 'Gulma' },
-            {no: 177, start: 421200, end: 421750, jalur: 'A', lebar: 3, panjang: 550, luas: 1650, keterangan: 'Gulma' },
-            {no: 178, start: 421875, end: 421900, jalur: 'A', lebar: 2.5, panjang: 25, luas: 62.5, keterangan: 'Gulma' },
-            {no: 179, start: 422300, end: 422500, jalur: 'A', lebar: 1, panjang: 200, luas: 200, keterangan: 'Gulma' },
-            {no: 180, start: 422875, end: 423600, jalur: 'A', lebar: 3.5, panjang: 725, luas: 2537.5, keterangan: 'Gulma' },
-            {no: 181, start: 423800, end: 424800, jalur: 'A', lebar: 2.5, panjang: 1000, luas: 2500, keterangan: 'Gulma' },
-            {no: 182, start: 426250, end: 427400, jalur: 'A', lebar: 3, panjang: 1150, luas: 3450, keterangan: 'Gulma' },
-            {no: 183, start: 427900, end: 428000, jalur: 'A', lebar: 3, panjang: 100, luas: 300, keterangan: 'Gulma' },
-            {no: 184, start: 428000, end: 428600, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Gulma' },
-            {no: 185, start: 429150, end: 429200, jalur: 'A', lebar: 2.5, panjang: 50, luas: 125, keterangan: 'Gulma' },
-            {no: 186, start: 429200, end: 429400, jalur: 'A', lebar: 4, panjang: 200, luas: 800, keterangan: 'Gulma' },
-            {no: 188, start: 430250, end: 430300, jalur: 'A', lebar: 3, panjang: 50, luas: 150, keterangan: 'Gulma' },
-            {no: 189, start: 430300, end: 431400, jalur: 'A', lebar: 3, panjang: 1100, luas: 3300, keterangan: 'Gulma' },
-            {no: 190, start: 433000, end: 433900, jalur: 'A', lebar: 2.5, panjang: 900, luas: 2250, keterangan: 'Gulma' },
-            {no: 191, start: 434700, end: 435600, jalur: 'A', lebar: 5, panjang: 450, luas: 2250, keterangan: 'Gulma' },
-            {no: 192, start: 435600, end: 435950, jalur: 'A', lebar: 2, panjang: 350, luas: 700, keterangan: 'Gulma' },
-            {no: 193, start: 436050, end: 436800, jalur: 'A', lebar: 2.5, panjang: 750, luas: 1875, keterangan: 'Gulma' },
-            {no: 194, start: 437250, end: 438800, jalur: 'A', lebar: 2.5, panjang: 1550, luas: 3875, keterangan: 'Gulma' },
-            {no: 195, start: 439250, end: 439700, jalur: 'A', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Gulma' },
-            {no: 196, start: 439850, end: 440300, jalur: 'A', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Gulma' },
-            {no: 197, start: 441200, end: 441350, jalur: 'A', lebar: 3, panjang: 150, luas: 750, keterangan: 'Gulma' },
-            {no: 198, start: 441650, end: 442000, jalur: 'A', lebar: 2.5, panjang: 350, luas: 875, keterangan: 'Gulma' },
-            {no: 199, start: 442025, end: 442150, jalur: 'A', lebar: 2.5, panjang: 125, luas: 312.5, keterangan: 'Gulma Akses Bawen' },
-            {no: 200, start: 442800, end: 443900, jalur: 'A', lebar: 3, panjang: 1100, luas: 3300, keterangan: 'Gulma Akses Bawen' },
-            {no: 201, start: 443900, end: 444700, jalur: 'A', lebar: 4, panjang: 800, luas: 3200, keterangan: 'Gulma Akses Bawen'},
-            {no: 202, start: 442600, end: 443150, jalur: 'A', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Gulma'},
-            {no: 203, start: 443600, end: 444100, jalur: 'A', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Gulma'},
-            {no: 204, start: 444100, end: 444300, jalur: 'A', lebar: 3, panjang: 200, luas: 600, keterangan: 'Gulma'},
-            {no: 205, start: 444650, end: 445700, jalur: 'A', lebar: 3, panjang: 1050, luas: 3150, keterangan: 'Gulma'},
-            {no: 206, start: 445700, end: 446100, jalur: 'A', lebar: 2, panjang: 400, luas: 800, keterangan: 'Gulma'},
-            {no: 207, start: 446300, end: 449200, jalur: 'A', lebar: 5, panjang: 580, luas: 2900, keterangan: 'Gulma'},
-            {no: 208, start: 446900, end: 448350, jalur: 'A', lebar: 3.5, panjang: 1450, luas: 5075, keterangan: 'Gulma'},
-            {no: 209, start: 448950, end: 449650, jalur: 'A', lebar: 3.5, panjang: 700, luas: 2450, keterangan: 'Gulma'},
-            {no: 210, start: 450000, end: 451300, jalur: 'A', lebar: 3.5, panjang: 1300, luas: 4550, keterangan: 'Gulma'},
-            {no: 211, start: 452850, end: 453750, jalur: 'A', lebar: 2.5, panjang: 900, luas: 2250, keterangan: 'Gulma'},
-            {no: 212, start: 453900, end: 454300, jalur: 'A', lebar: 2.5, panjang: 400, luas: 1000, keterangan: 'Gulma'},
-            {no: 213, start: 455650, end: 455900, jalur: 'A', lebar: 2.5, panjang: 250, luas: 625, keterangan: 'Gulma'},
-            {no: 214, start: 457400, end: 457600, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Gulma'},
-            {no: 215, start: 457900, end: 459200, jalur: 'A', lebar: 3, panjang: 1300, luas: 3900, keterangan: 'Gulma'},
-            {no: 216, start: 459200, end: 459750, jalur: 'A', lebar: 3, panjang: 550, luas: 1650, keterangan: 'Gulma'},
-            {no: 217, start: 460200, end: 460700, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma Akses Salatiga'},
-            {no: 218, start: 459500, end: 460600, jalur: 'A', lebar: 3, panjang: 1100, luas: 3300, keterangan: 'Gulma'},
-            {no: 219, start: 460800, end: 461000, jalur: 'A', lebar: 2, panjang: 300, luas: 600, keterangan: 'Gulma'},
-            {no: 220, start: 462250, end: 463000, jalur: 'A', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Gulma'},
-            {no: 221, start: 463800, end: 464750, jalur: 'A', lebar: 3.5, panjang: 950, luas: 3325, keterangan: 'Gulma'},
-            {no: 222, start: 466100, end: 467250, jalur: 'A', lebar: 3, panjang: 1150, luas: 3450, keterangan: 'Gulma'},
-            {no: 223, start: 467550, end: 468550, jalur: 'A', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Gulma'},
-            {no: 224, start: 468850, end: 469100, jalur: 'A', lebar: 3, panjang: 250, luas: 750, keterangan: 'Gulma'},
-            {no: 225, start: 469160, end: 469250, jalur: 'A', lebar: 2, panjang: 90, luas: 180, keterangan: 'Gulma'},
-            {no: 226, start: 469320, end: 469500, jalur: 'A', lebar: 2, panjang: 180, luas: 360, keterangan: 'Gulma'},
-            {no: 227, start: 469750, end: 470500, jalur: 'A', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Gulma'},
-            {no: 228, start: 471200, end: 471900, jalur: 'A', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Gulma'},
-            {no: 229, start: 472150, end: 474750, jalur: 'A', lebar: 3, panjang: 2600, luas: 7800, keterangan: 'Gulma'},
-            {no: 230, start: 474950, end: 475150, jalur: 'A', lebar: 3.5, panjang: 200, luas: 700, keterangan: 'Gulma'},
-            {no: 231, start: 475700, end: 476650, jalur: 'A', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Gulma'},
-            {no: 232, start: 476740, end: 477650, jalur: 'A', lebar: 3, panjang: 910, luas: 2730, keterangan: 'Gulma'},
-            {no: 233, start: 477700, end: 478200, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma'},
-            {no: 234, start: 478250, end: 479500, jalur: 'A', lebar: 3, panjang: 1250, luas: 3750, keterangan: 'Gulma'},
-            {no: 235, start: 480200, end: 480550, jalur: 'A', lebar: 3, panjang: 150, luas: 450, keterangan: 'Gulma'},
-            {no: 236, start: 481750, end: 482300, jalur: 'A', lebar: 3, panjang: 550, luas: 1650, keterangan: 'Gulma'},
-            {no: 237, start: 482100, end: 484100, jalur: 'A', lebar: 3, panjang: 2000, luas: 6000, keterangan: 'Gulma'},
-            {no: 238, start: 484550, end: 484900, jalur: 'A', lebar: 3, panjang: 350, luas: 1050, keterangan: 'Gulma'},
-            {no: 239, start: 491035, end: 492000, jalur: 'A', lebar: 10, panjang: 965, luas: 9650, keterangan: 'Gulma Median'},
-            {no: 240, start: 491400, end: 492000, jalur: 'A', lebar: 3, panjang: 600, luas: 1800, keterangan: 'Gulma'},
-            {no: 241, start: 492000, end: 491400, jalur: 'B', lebar: 3, panjang: 600, luas: 1800, keterangan: 'Gulma'},
-            {no: 242, start: 484500, end: 483400, jalur: 'B', lebar: 3.5, panjang: 1100, luas: 3850, keterangan: 'Gulma'},
-            {no: 243, start: 484350, end: 482500, jalur: 'B', lebar: 2.5, panjang: 1900, luas: 4750, keterangan: 'Gulma'},
-            {no: 244, start: 482450, end: 481650, jalur: 'B', lebar: 3, panjang: 800, luas: 2400, keterangan: 'Gulma'},
-            {no: 245, start: 480700, end: 480500, jalur: 'B', lebar: 3, panjang: 200, luas: 600, keterangan: 'Gulma'},
-            {no: 246, start: 480500, end: 480000, jalur: 'B', lebar: 3.5, panjang: 500, luas: 1750, keterangan: 'Gulma'},
-            {no: 247, start: 479500, end: 478250, jalur: 'B', lebar: 3.5, panjang: 1250, luas: 4375, keterangan: 'Gulma'},
-            {no: 248, start: 478200, end: 477700, jalur: 'B', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma'},
-            {no: 249, start: 477650, end: 476750, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Gulma'},
-            {no: 250, start: 476650, end: 475700, jalur: 'B', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Gulma'},
-            {no: 251, start: 475150, end: 474950, jalur: 'B', lebar: 2, panjang: 300, luas: 600, keterangan: 'Gulma'},
-            {no: 252, start: 474750, end: 473900, jalur: 'B', lebar: 3, panjang: 850, luas: 2550, keterangan: 'Gulma'},
-            {no: 253, start: 472600, end: 472150, jalur: 'B', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Gulma'},
-            {no: 254, start: 471950, end: 471100, jalur: 'B', lebar: 2.5, panjang: 900, luas: 2250, keterangan: 'Gulma'},
-            {no: 255, start: 470500, end: 467750, jalur: 'B', lebar: 2, panjang: 2750, luas: 5500, keterangan: 'Gulma'},
-            {no: 256, start: 467250, end: 466800, jalur: 'B', lebar: 3.5, panjang: 450, luas: 1575, keterangan: 'Gulma'},
-            {no: 257, start: 466800, end: 466350, jalur: 'B', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Gulma'},
-            {no: 258, start: 466050, end: 464800, jalur: 'B', lebar: 2, panjang: 250, luas: 500, keterangan: 'Gulma'},
-            {no: 259, start: 464300, end: 463850, jalur: 'B', lebar: 3, panjang: 450, luas: 1350, keterangan: 'Gulma'},
-            {no: 260, start: 461700, end: 462150, jalur: 'B', lebar: 2.5, panjang: 1450, luas: 3625, keterangan: 'Gulma'},
-            {no: 261, start: 461000, end: 461700, jalur: 'B', lebar: 3, panjang: 250, luas: 750, keterangan: 'Gulma'},
-            {no: 262, start: 460900, end: 460650, jalur: 'B', lebar: 3.5, panjang: 250, luas: 875, keterangan: 'Gulma'},
-            {no: 263, start: 460500, end: 459600, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Gulma'},
-            {no: 235, start: 460500, end: 459600, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Gulma'},
-            {no: 236, start: 420000, end: 420070, jalur: 'A', lebar: 7, panjang: 70, luas: 1050, keterangan: 'Trap 1'},
-            {no: 237, start: 420125, end: 420275, jalur: 'A', lebar: 10, panjang: 150, luas: 1500, keterangan: 'Trap 1'},
-            {no: 238, start: 421250, end: 421350, jalur: 'A', lebar: 7, panjang: 100, luas: 700, keterangan: 'Trap 1'},
-            {no: 239, start: 421350, end: 421650, jalur: 'A', lebar: 9, panjang: 300, luas: 2700, keterangan: 'Trap 1'},
-            {no: 240, start: 423650, end: 423790, jalur: 'A', lebar: 8, panjang: 140, luas: 1120, keterangan: 'Trap 1'},
-            {no: 241, start: 424300, end: 424740, jalur: 'A', lebar: 8, panjang: 440, luas: 3520, keterangan: 'Trap 1'},
-            {no: 242, start: 424900, end: 425400, jalur: 'A', lebar: 4, panjang: 500, luas: 2000, keterangan: 'Trap 1'},
-            {no: 243, start: 426400, end: 426600, jalur: 'A', lebar: 7, panjang: 200, luas: 1400, keterangan: 'Trap 1'},
-            {no: 244, start: 426600, end: 426750, jalur: 'A', lebar: 8, panjang: 150, luas: 1200, keterangan: 'Trap 1'},
-            {no: 245, start: 427000, end: 427380, jalur: 'A', lebar: 7, panjang: 380, luas: 2660, keterangan: 'Trap 1'},
-            {no: 246, start: 427950, end: 428160, jalur: 'A', lebar: 8, panjang: 210, luas: 1680, keterangan: 'Trap 1'},
-            {no: 247, start: 429050, end: 429380, jalur: 'A', lebar: 5, panjang: 330, luas: 1650, keterangan: 'Trap 1'},
-            {no: 250, start: 430550, end: 430900, jalur: 'A', lebar: 5, panjang: 350, luas: 1750, keterangan: 'Trap 1'},
-            {no: 251, start: 432000, end: 432600, jalur: 'A', lebar: 4, panjang: 600, luas: 2400, keterangan: 'Trap 1'},
-            {no: 252, start: 433000, end: 433200, jalur: 'A', lebar: 7, panjang: 200, luas: 1400, keterangan: 'Trap 1'},
-            {no: 253, start: 434750, end: 435000, jalur: 'A', lebar: 8, panjang: 250, luas: 2000, keterangan: 'Trap 1'},
-            {no: 254, start: 436050, end: 436500, jalur: 'A', lebar: 8, panjang: 450, luas: 3600, keterangan: 'Trap 1'},
-            {no: 255, start: 436500, end: 436780, jalur: 'A', lebar: '', panjang: 280, luas: 0, keterangan: 'Trap 1'},
-            {no: 256, start: 437400, end: 438300, jalur: 'A', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Trap 1'},
-            {no: 257, start: 438300, end: 438790, jalur: 'A', lebar: 8, panjang: 490, luas: 3920, keterangan: 'Trap 1'},
-            {no: 258, start: 439190, end: 439650, jalur: 'A', lebar: 10, panjang: 460, luas: 0, keterangan: 'Trap 1'}
+            {no: 24, start: 431650, end: 432500, jalur: 'A', lebar: 6.5, panjang: 850, luas: 5525, keterangan: 'Rounding'},
+            {no: 25, start: 432500, end: 433000, jalur: 'A', lebar: 4, panjang: 500, luas: 2000, keterangan: 'Rounding'},
+            {no: 26, start: 433000, end: 433600, jalur: 'A', lebar: 2.5, panjang: 600, luas: 1500, keterangan: 'Rounding'},
+            {no: 27, start: 433600, end: 433800, jalur: 'A', lebar: 4.5, panjang: 200, luas: 900, keterangan: 'Rounding'},
+            {no: 28, start: 433800, end: 434500, jalur: 'A', lebar: 3.5, panjang: 700, luas: 2450, keterangan: 'Rounding'},
+            {no: 29, start: 434500, end: 434700, jalur: 'A', lebar: 3, panjang: 200, luas: 600, keterangan: 'Rounding'},
+            {no: 30, start: 434700, end: 434900, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding'},
+            {no: 31, start: 435150, end: 435700, jalur: 'A', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Rounding'},
+            {no: 32, start: 435700, end: 435950, jalur: 'A', lebar: 4.5, panjang: 250, luas: 1125, keterangan: 'Rounding'},
+            {no: 33, start: 435950, end: 436300, jalur: 'A', lebar: 3, panjang: 350, luas: 1050, keterangan: 'Rounding'},
+            {no: 34, start: 436500, end: 437000, jalur: 'A', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding'},
+            {no: 35, start: 437250, end: 438700, jalur: 'A', lebar: 3, panjang: 1450, luas: 4350, keterangan: 'Rounding'},
+            {no: 36, start: 438800, end: 440350, jalur: 'A', lebar: 3, panjang: 1550, luas: 4650, keterangan: 'Rounding'},
+            {no: 37, start: 441250, end: 441350, jalur: 'A', lebar: 2.5, panjang: 100, luas: 250, keterangan: 'Rounding'},
+            {no: 38, start: 441650, end: 442150, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Rounding'},
+            {no: 39, start: 442150, end: 442400, jalur: 'A', lebar: 12, panjang: 250, luas: 3000, keterangan: 'Rounding'},
+            {no: 40, start: 442400, end: 444300, jalur: 'A', lebar: 3, panjang: 1900, luas: 5700, keterangan: 'Rounding'},
+            {no: 41, start: 444650, end: 445700, jalur: 'A', lebar: 2.5, panjang: 1050, luas: 2625, keterangan: 'Rounding'},
+            {no: 42, start: 445700, end: 446200, jalur: 'A', lebar: 3.5, panjang: 500, luas: 1750, keterangan: 'Rounding'},
+            {no: 43, start: 446200, end: 448350, jalur: 'A', lebar: 2.5, panjang: 2150, luas: 5375, keterangan: 'Rounding'},
+            {no: 44, start: 448350, end: 450000, jalur: 'A', lebar: 3.5, panjang: 1650, luas: 5775, keterangan: 'Rounding'},
+            {no: 45, start: 450000, end: 451300, jalur: 'A', lebar: 2.5, panjang: 1300, luas: 3250, keterangan: 'Rounding'},
+            {no: 46, start: 451300, end: 452550, jalur: 'A', lebar: 3.5, panjang: 1250, luas: 4375, keterangan: 'Rounding'},
+            {no: 47, start: 452600, end: 452750, jalur: 'A', lebar: 3, panjang: 150, luas: 450, keterangan: 'Rounding'},
+            {no: 48, start: 453900, end: 454300, jalur: 'A', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Rounding'},
+            {no: 49, start: 454300, end: 455900, jalur: 'A', lebar: 3, panjang: 1600, luas: 4800, keterangan: 'Rounding'},
+            {no: 50, start: 455900, end: 456500, jalur: 'A', lebar: 2.5, panjang: 600, luas: 1500, keterangan: 'Rounding'},
+            {no: 51, start: 456500, end: 457100, jalur: 'A', lebar: 3.5, panjang: 600, luas: 2100, keterangan: 'Rounding'},
+            {no: 52, start: 457100, end: 457350, jalur: 'A', lebar: 5, panjang: 250, luas: 1250, keterangan: 'Rounding'},
+            {no: 53, start: 457350, end: 459100, jalur: 'A', lebar: 3.5, panjang: 1750, luas: 6125, keterangan: 'Rounding'},
+            {no: 54, start: 459100, end: 459800, jalur: 'A', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Rounding'},
+            {no: 55, start: 459200, end: 460000, jalur: 'A', lebar: 5, panjang: 800, luas: 4000, keterangan: 'Rounding Akses Salatiga'},
+            {no: 58, start: 460200, end: 460500, jalur: 'A', lebar: 3, panjang: 300, luas: 900, keterangan: 'Rounding Akses Salatiga'},
+            {no: 59, start: 460200, end: 460500, jalur: 'B', lebar: 3, panjang: 300, luas: 900, keterangan: 'Rounding Akses Salatiga'},
+            {no: 60, start: 459200, end: 460200, jalur: 'B', lebar: 4, panjang: 1000, luas: 4000, keterangan: 'Rounding Akses Salatiga'},
+            {no: 63, start: 459200, end: 459650, jalur: 'B', lebar: 3, panjang: 450, luas: 1350, keterangan: 'Rounding Mainroad'},
+            {no: 64, start: 457400, end: 459200, jalur: 'B', lebar: 2.5, panjang: 1800, luas: 4500, keterangan: 'Rounding'},
+            {no: 65, start: 457100, end: 457400, jalur: 'B', lebar: 3, panjang: 300, luas: 900, keterangan: 'Rounding'},
+            {no: 66, start: 456250, end: 457100, jalur: 'B', lebar: 3, panjang: 850, luas: 2550, keterangan: 'Rounding'},
+            {no: 67, start: 454600, end: 456250, jalur: 'B', lebar: 3, panjang: 1650, luas: 4950, keterangan: 'Rounding'},
+            {no: 68, start: 454200, end: 454600, jalur: 'B', lebar: 4.5, panjang: 400, luas: 1800, keterangan: 'Rounding'},
+            {no: 69, start: 453900, end: 454200, jalur: 'B', lebar: 2.5, panjang: 300, luas: 750, keterangan: 'Rounding'},
+            {no: 70, start: 452500, end: 453700, jalur: 'B', lebar: 2.5, panjang: 1200, luas: 3000, keterangan: 'Rounding'},
+            {no: 71, start: 451850, end: 452500, jalur: 'B', lebar: 3, panjang: 650, luas: 1950, keterangan: 'Rounding'},
+            {no: 72, start: 450000, end: 451850, jalur: 'B', lebar: 2.5, panjang: 1850, luas: 4625, keterangan: 'Rounding'},
+            {no: 73, start: 448800, end: 450000, jalur: 'B', lebar: 3, panjang: 1200, luas: 3600, keterangan: 'Rounding'},
+            {no: 74, start: 446300, end: 448800, jalur: 'B', lebar: 2.5, panjang: 2500, luas: 6250, keterangan: 'Rounding'},
+            {no: 75, start: 445900, end: 446300, jalur: 'B', lebar: 3.5, panjang: 400, luas: 1400, keterangan: 'Rounding'},
+            {no: 76, start: 444650, end: 445900, jalur: 'B', lebar: 2.5, panjang: 1250, luas: 3125, keterangan: 'Rounding'},
+            {no: 77, start: 444250, end: 444300, jalur: 'B', lebar: 4, panjang: 50, luas: 200, keterangan: 'Rounding'},
+            {no: 78, start: 443300, end: 444250, jalur: 'B', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Rounding'},
+            {no: 79, start: 442200, end: 443300, jalur: 'B', lebar: 2.5, panjang: 1100, luas: 2750, keterangan: 'Rounding'},
+            {no: 80, start: 441700, end: 442000, jalur: 'B', lebar: 2.5, panjang: 300, luas: 750, keterangan: 'Rounding'},
+            {no: 81, start: 441175, end: 441400, jalur: 'B', lebar: 2.5, panjang: 225, luas: 562.5, keterangan: 'Rounding'},
+            {no: 82, start: 439150, end: 440300, jalur: 'B', lebar: 2.5, panjang: 1150, luas: 2875, keterangan: 'Rounding'},
+            {no: 83, start: 439100, end: 439150, jalur: 'B', lebar: 4, panjang: 50, luas: 200, keterangan: 'Rounding'},
+            {no: 84, start: 438825, end: 439100, jalur: 'B', lebar: 2.5, panjang: 275, luas: 687.5, keterangan: 'Rounding'},
+            {no: 85, start: 438625, end: 438825, jalur: 'B', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding'},
+            {no: 86, start: 437200, end: 438625, jalur: 'B', lebar: 2.5, panjang: 1425, luas: 3562.5, keterangan: 'Rounding'},
+            {no: 87, start: 436500, end: 436900, jalur: 'B', lebar: 2.5, panjang: 400, luas: 1000, keterangan: 'Rounding'},
+            {no: 88, start: 436400, end: 436500, jalur: 'B', lebar: 2, panjang: 100, luas: 200, keterangan: 'Rounding'},
+            {no: 89, start: 436200, end: 436400, jalur: 'B', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding'},
+            {no: 90, start: 435800, end: 436200, jalur: 'B', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Rounding'},
+            {no: 91, start: 435725, end: 435800, jalur: 'B', lebar: 5, panjang: 75, luas: 375, keterangan: 'Rounding'},
+            {no: 92, start: 434500, end: 435725, jalur: 'B', lebar: 2.5, panjang: 1225, luas: 3062.5, keterangan: 'Rounding'},
+            {no: 93, start: 434100, end: 434500, jalur: 'B', lebar: 4, panjang: 400, luas: 1600, keterangan: 'Rounding'},
+            {no: 94, start: 433575, end: 434100, jalur: 'B', lebar: 2, panjang: 525, luas: 1050, keterangan: 'Rounding'},
+            {no: 95, start: 433000, end: 433575, jalur: 'B', lebar: 2.5, panjang: 575, luas: 1437.5, keterangan: 'Rounding'},
+            {no: 96, start: 432950, end: 433000, jalur: 'B', lebar: 4, panjang: 50, luas: 200, keterangan: 'Rounding'},
+            {no: 97, start: 432550, end: 432950, jalur: 'B', lebar: 2.5, panjang: 400, luas: 1000, keterangan: 'Rounding'},
+            {no: 98, start: 431800, end: 432550, jalur: 'B', lebar: 5, panjang: 750, luas: 3750, keterangan: 'Rounding'},
+            {no: 99, start: 431350, end: 431800, jalur: 'B', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Rounding'},
+            {no: 100, start: 431100, end: 431350, jalur: 'B', lebar: 4, panjang: 250, luas: 1000, keterangan: 'Rounding'},
+            {no: 101, start: 427850, end: 431100, jalur: 'B', lebar: 2.5, panjang: 3250, luas: 8125, keterangan: 'Rounding'},
+            {no: 102, start: 426300, end: 427300, jalur: 'B', lebar: 2.5, panjang: 1000, luas: 2500, keterangan: 'Rounding'},
+            {no: 103, start: 422900, end: 425800, jalur: 'B', lebar: 2.5, panjang: 2900, luas: 7250, keterangan: 'Rounding'},
+            {no: 104, start: 422300, end: 422400, jalur: 'B', lebar: 5, panjang: 100, luas: 500, keterangan: 'Rounding'},
+            {no: 105, start: 421875, end: 421900, jalur: 'B', lebar: 2.5, panjang: 25, luas: 62.5, keterangan: 'Rounding'},
+            {no: 106, start: 421000, end: 421700, jalur: 'B', lebar: 2.5, panjang: 700, luas: 1750, keterangan: 'Rounding'},
+            {no: 107, start: 419600, end: 420800, jalur: 'B', lebar: 2.5, panjang: 1200, luas: 3000, keterangan: 'Rounding'},
+            {no: 108, start: 419400, end: 419525, jalur: 'B', lebar: 2.5, panjang: 125, luas: 312.5, keterangan: 'Rounding'},
+            {no: 111, start: 419400, end: 419825, jalur: 'A', lebar: 2.5, panjang: 425, luas: 1062.5, keterangan: 'Gulma'},
+            {no: 112, start: 419825, end: 420000, jalur: 'A', lebar: 2.5, panjang: 175, luas: 437.5, keterangan: 'Gulma'},
+            {no: 114, start: 421200, end: 421750, jalur: 'A', lebar: 3, panjang: 550, luas: 1650, keterangan: 'Gulma'},
+            {no: 115, start: 421875, end: 421900, jalur: 'A', lebar: 2.5, panjang: 25, luas: 62.5, keterangan: 'Gulma'},
+            {no: 116, start: 422300, end: 422400, jalur: 'A', lebar: 2, panjang: 100, luas: 200, keterangan: 'Gulma'},
+            {no: 117, start: 422875, end: 423600, jalur: 'A', lebar: 3.5, panjang: 725, luas: 2537.5, keterangan: 'Gulma'},
+            {no: 118, start: 423800, end: 424800, jalur: 'A', lebar: 2.5, panjang: 1000, luas: 2500, keterangan: 'Gulma'},
+            {no: 119, start: 426250, end: 427400, jalur: 'A', lebar: 3, panjang: 1150, luas: 3450, keterangan: 'Gulma'},
+            {no: 120, start: 427900, end: 428000, jalur: 'A', lebar: 3, panjang: 100, luas: 300, keterangan: 'Gulma'},
+            {no: 121, start: 428000, end: 428600, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Gulma'},
+            {no: 122, start: 429150, end: 429200, jalur: 'A', lebar: 2.5, panjang: 50, luas: 125, keterangan: 'Gulma'},
+            {no: 123, start: 429200, end: 429400, jalur: 'A', lebar: 4, panjang: 200, luas: 800, keterangan: 'Gulma'},
+            {no: 125, start: 430250, end: 430300, jalur: 'A', lebar: 3, panjang: 50, luas: 150, keterangan: 'Gulma'},
+            {no: 126, start: 430300, end: 431400, jalur: 'A', lebar: 3, panjang: 1100, luas: 3300, keterangan: 'Gulma'},
+            {no: 127, start: 433000, end: 433900, jalur: 'A', lebar: 2.5, panjang: 900, luas: 2250, keterangan: 'Gulma'},
+            {no: 128, start: 434700, end: 435150, jalur: 'A', lebar: 5, panjang: 450, luas: 2250, keterangan: 'Gulma'},
+            {no: 129, start: 435600, end: 435950, jalur: 'A', lebar: 2, panjang: 350, luas: 700, keterangan: 'Gulma'},
+            {no: 130, start: 436050, end: 436800, jalur: 'A', lebar: 2.5, panjang: 750, luas: 1875, keterangan: 'Gulma'},
+            {no: 131, start: 437250, end: 438800, jalur: 'A', lebar: 2.5, panjang: 1550, luas: 3875, keterangan: 'Gulma'},
+            {no: 132, start: 439200, end: 439700, jalur: 'A', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Gulma'},
+            {no: 133, start: 439850, end: 440300, jalur: 'A', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Gulma'},
+            {no: 134, start: 441200, end: 441350, jalur: 'A', lebar: 5, panjang: 150, luas: 750, keterangan: 'Gulma'},
+            {no: 135, start: 441650, end: 442000, jalur: 'A', lebar: 2.5, panjang: 350, luas: 875, keterangan: 'Gulma'},
+            {no: 136, start: 442025, end: 442150, jalur: 'A', lebar: 2.5, panjang: 125, luas: 312.5, keterangan: 'Gulma Akses Bawen'},
+            {no: 137, start: 442800, end: 443900, jalur: 'A', lebar: 3, panjang: 1100, luas: 3300, keterangan: 'Gulma Akses Bawen'},
+            {no: 138, start: 443900, end: 444700, jalur: 'A', lebar: 4, panjang: 800, luas: 3200, keterangan: 'Gulma Akses Bawen'},
+            {no: 139, start: 442600, end: 443150, jalur: 'A', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Gulma'},
+            {no: 140, start: 443600, end: 444100, jalur: 'A', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Gulma'},
+            {no: 141, start: 444100, end: 444300, jalur: 'A', lebar: 3, panjang: 200, luas: 600, keterangan: 'Gulma'},
+            {no: 142, start: 444650, end: 445700, jalur: 'A', lebar: 3, panjang: 1050, luas: 3150, keterangan: 'Gulma'},
+            {no: 143, start: 445700, end: 446100, jalur: 'A', lebar: 2, panjang: 400, luas: 800, keterangan: 'Gulma'},
+            {no: 144, start: 446300, end: 446900, jalur: 'A', lebar: 5, panjang: 600, luas: 3000, keterangan: 'Gulma'},
+            {no: 145, start: 446900, end: 448350, jalur: 'A', lebar: 3.5, panjang: 1450, luas: 5075, keterangan: 'Gulma'},
+            {no: 146, start: 448950, end: 449650, jalur: 'A', lebar: 3.5, panjang: 700, luas: 2450, keterangan: 'Gulma'},
+            {no: 147, start: 450000, end: 451300, jalur: 'A', lebar: 3.5, panjang: 1300, luas: 4550, keterangan: 'Gulma'},
+            {no: 148, start: 452850, end: 453750, jalur: 'A', lebar: 2.5, panjang: 900, luas: 2250, keterangan: 'Gulma'},
+            {no: 149, start: 453900, end: 454300, jalur: 'A', lebar: 2.5, panjang: 400, luas: 1000, keterangan: 'Gulma'},
+            {no: 150, start: 455650, end: 455900, jalur: 'A', lebar: 2.5, panjang: 250, luas: 625, keterangan: 'Gulma'},
+            {no: 151, start: 457400, end: 457600, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Gulma'},
+            {no: 152, start: 457900, end: 459200, jalur: 'A', lebar: 3, panjang: 1300, luas: 3900, keterangan: 'Gulma'},
+            {no: 153, start: 459200, end: 459750, jalur: 'A', lebar: 3, panjang: 550, luas: 1650, keterangan: 'Gulma'},
+            {no: 154, start: 460200, end: 460700, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma Akses Salatiga'},
+            {no: 155, start: 459300, end: 459600, jalur: 'B', lebar: 5, panjang: 300, luas: 1500, keterangan: 'Gulma Akses Salatiga'},
+            {no: 156, start: 459200, end: 459750, jalur: 'B', lebar: 3, panjang: 550, luas: 1650, keterangan: 'Gulma'},
+            {no: 157, start: 458400, end: 459300, jalur: 'B', lebar: 2, panjang: 900, luas: 1800, keterangan: 'Gulma'},
+            {no: 158, start: 457900, end: 458400, jalur: 'B', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma'},
+            {no: 159, start: 456350, end: 456850, jalur: 'B', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Gulma'},
+            {no: 160, start: 455700, end: 455900, jalur: 'B', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Gulma'},
+            {no: 161, start: 454600, end: 455700, jalur: 'B', lebar: 1.5, panjang: 1100, luas: 1650, keterangan: 'Gulma'},
+            {no: 162, start: 453900, end: 454600, jalur: 'B', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Gulma'},
+            {no: 163, start: 452900, end: 453700, jalur: 'B', lebar: 3, panjang: 800, luas: 2400, keterangan: 'Gulma'},
+            {no: 164, start: 451400, end: 452900, jalur: 'B', lebar: 2.5, panjang: 1500, luas: 3750, keterangan: 'Gulma'},
+            {no: 165, start: 451100, end: 451400, jalur: 'B', lebar: 3, panjang: 300, luas: 900, keterangan: 'Gulma'},
+            {no: 166, start: 450600, end: 451100, jalur: 'B', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Gulma'},
+            {no: 167, start: 450000, end: 450600, jalur: 'B', lebar: 3, panjang: 600, luas: 1800, keterangan: 'Gulma'},
+            {no: 168, start: 449600, end: 450000, jalur: 'B', lebar: 2, panjang: 400, luas: 800, keterangan: 'Gulma'},
+            {no: 169, start: 448900, end: 449600, jalur: 'B', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Gulma'},
+            {no: 170, start: 448300, end: 448900, jalur: 'B', lebar: 2, panjang: 600, luas: 1200, keterangan: 'Gulma'},
+            {no: 171, start: 447900, end: 448300, jalur: 'B', lebar: 3.5, panjang: 400, luas: 1400, keterangan: 'Gulma'},
+            {no: 172, start: 446300, end: 447900, jalur: 'B', lebar: 3, panjang: 1600, luas: 4800, keterangan: 'Gulma'},
+            {no: 173, start: 445400, end: 445900, jalur: 'B', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma'},
+            {no: 174, start: 445200, end: 445400, jalur: 'B', lebar: 2, panjang: 200, luas: 400, keterangan: 'Gulma'},
+            {no: 175, start: 444650, end: 445200, jalur: 'B', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Gulma'},
+            {no: 176, start: 443700, end: 444250, jalur: 'B', lebar: 2, panjang: 550, luas: 1100, keterangan: 'Gulma'},
+            {no: 177, start: 442200, end: 443700, jalur: 'B', lebar: 3, panjang: 1500, luas: 4500, keterangan: 'Gulma'},
+            {no: 178, start: 444900, end: 445100, jalur: 'B', lebar: 4, panjang: 200, luas: 800, keterangan: 'Gulma Akses Bawen'},
+            {no: 179, start: 444200, end: 444700, jalur: 'B', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma Akses Bawen'},
+            {no: 180, start: 443000, end: 444100, jalur: 'B', lebar: 3, panjang: 1100, luas: 3300, keterangan: 'Gulma Akses Bawen'},
+            {no: 181, start: 441200, end: 441300, jalur: 'B', lebar: 3, panjang: 100, luas: 300, keterangan: 'Gulma'},
+            {no: 182, start: 440200, end: 440300, jalur: 'B', lebar: 3, panjang: 100, luas: 300, keterangan: 'Gulma'},
+            {no: 183, start: 439900, end: 440050, jalur: 'B', lebar: 3, panjang: 150, luas: 450, keterangan: 'Gulma'},
+            {no: 184, start: 439000, end: 439700, jalur: 'B', lebar: 2.5, panjang: 700, luas: 1750, keterangan: 'Gulma'},
+            {no: 185, start: 438600, end: 438800, jalur: 'B', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Gulma'},
+            {no: 186, start: 437800, end: 438450, jalur: 'B', lebar: 2.5, panjang: 650, luas: 1625, keterangan: 'Gulma'},
+            {no: 187, start: 437400, end: 437800, jalur: 'B', lebar: 4, panjang: 400, luas: 1600, keterangan: 'Gulma'},
+            {no: 188, start: 436300, end: 437000, jalur: 'B', lebar: 2.5, panjang: 700, luas: 1750, keterangan: 'Gulma'},
+            {no: 189, start: 436100, end: 436300, jalur: 'B', lebar: 5, panjang: 200, luas: 1000, keterangan: 'Gulma'},
+            {no: 190, start: 435750, end: 435900, jalur: 'B', lebar: 2.5, panjang: 150, luas: 375, keterangan: 'Gulma'},
+            {no: 191, start: 435550, end: 435750, jalur: 'B', lebar: 3, panjang: 200, luas: 600, keterangan: 'Gulma'},
+            {no: 192, start: 434900, end: 435100, jalur: 'B', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Gulma'},
+            {no: 193, start: 434800, end: 434900, jalur: 'B', lebar: 2, panjang: 100, luas: 200, keterangan: 'Gulma'},
+            {no: 194, start: 433200, end: 433500, jalur: 'B', lebar: 2.5, panjang: 300, luas: 750, keterangan: 'Gulma'},
+            {no: 195, start: 433000, end: 433200, jalur: 'B', lebar: 2, panjang: 200, luas: 400, keterangan: 'Gulma'},
+            {no: 196, start: 432550, end: 433000, jalur: 'B', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Gulma'},
+            {no: 197, start: 431600, end: 431700, jalur: 'B', lebar: 2.5, panjang: 100, luas: 250, keterangan: 'Gulma'},
+            {no: 198, start: 431350, end: 431600, jalur: 'B', lebar: 2.5, panjang: 250, luas: 625, keterangan: 'Gulma'},
+            {no: 199, start: 430780, end: 431000, jalur: 'B', lebar: 5, panjang: 220, luas: 1100, keterangan: 'Gulma'},
+            {no: 200, start: 430450, end: 430750, jalur: 'B', lebar: 2.5, panjang: 300, luas: 750, keterangan: 'Gulma'},
+            {no: 202, start: 427900, end: 429900, jalur: 'B', lebar: 2.5, panjang: 2000, luas: 5000, keterangan: 'Gulma'},
+            {no: 203, start: 427300, end: 427400, jalur: 'B', lebar: 2.5, panjang: 100, luas: 250, keterangan: 'Gulma'},
+            {no: 204, start: 426600, end: 427300, jalur: 'B', lebar: 4, panjang: 700, luas: 2800, keterangan: 'Gulma'},
+            {no: 205, start: 426250, end: 426600, jalur: 'B', lebar: 2.5, panjang: 350, luas: 875, keterangan: 'Gulma'},
+            {no: 206, start: 425300, end: 425600, jalur: 'B', lebar: 2.5, panjang: 300, luas: 750, keterangan: 'Gulma'},
+            {no: 207, start: 424900, end: 425300, jalur: 'B', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Gulma'},
+            {no: 208, start: 424600, end: 424900, jalur: 'B', lebar: 2.5, panjang: 300, luas: 750, keterangan: 'Gulma'},
+            {no: 209, start: 424200, end: 424600, jalur: 'B', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Gulma'},
+            {no: 210, start: 423500, end: 424200, jalur: 'B', lebar: 2.5, panjang: 700, luas: 1750, keterangan: 'Gulma'},
+            {no: 211, start: 423000, end: 423500, jalur: 'B', lebar: 2, panjang: 500, luas: 1000, keterangan: 'Gulma'},
+            {no: 212, start: 422900, end: 423000, jalur: 'B', lebar: 2.5, panjang: 100, luas: 250, keterangan: 'Gulma'},
+            {no: 213, start: 422300, end: 422400, jalur: 'B', lebar: 2.5, panjang: 100, luas: 250, keterangan: 'Gulma'},
+            {no: 214, start: 421875, end: 421900, jalur: 'B', lebar: 3, panjang: 25, luas: 75, keterangan: 'Gulma'},
+            {no: 215, start: 421300, end: 421700, jalur: 'B', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Gulma'},
+            {no: 216, start: 421200, end: 421300, jalur: 'B', lebar: 3, panjang: 100, luas: 300, keterangan: 'Gulma'},
+            {no: 217, start: 419600, end: 420000, jalur: 'B', lebar: 3, panjang: 400, luas: 1200, keterangan: 'Gulma'},
+            {no: 218, start: 419450, end: 419525, jalur: 'B', lebar: 3, panjang: 75, luas: 225, keterangan: 'Gulma'},
+            {no: 220, start: 420000, end: 420070, jalur: 'A', lebar: 7, panjang: 70, luas: 490, keterangan: 'Lereng Trap 1'},
+            {no: 221, start: 420125, end: 420275, jalur: 'A', lebar: 10, panjang: 150, luas: 1500, keterangan: 'Lereng Trap 1'},
+            {no: 222, start: 421250, end: 421350, jalur: 'A', lebar: 7, panjang: 100, luas: 700, keterangan: 'Lereng Trap 1'},
+            {no: 223, start: 421350, end: 421650, jalur: 'A', lebar: 9, panjang: 300, luas: 2700, keterangan: 'Lereng Trap 1'},
+            {no: 224, start: 423650, end: 423790, jalur: 'A', lebar: 8, panjang: 140, luas: 1120, keterangan: 'Lereng Trap 1'},
+            {no: 225, start: 424300, end: 424740, jalur: 'A', lebar: 8, panjang: 440, luas: 3520, keterangan: 'Lereng Trap 1'},
+            {no: 226, start: 424900, end: 425400, jalur: 'A', lebar: 4, panjang: 500, luas: 2000, keterangan: 'Lereng Trap 1'},
+            {no: 227, start: 426400, end: 426600, jalur: 'A', lebar: 7, panjang: 200, luas: 1400, keterangan: 'Lereng Trap 1'},
+            {no: 228, start: 426600, end: 426750, jalur: 'A', lebar: 8, panjang: 150, luas: 1200, keterangan: 'Lereng Trap 1'},
+            {no: 229, start: 427000, end: 427380, jalur: 'A', lebar: 7, panjang: 380, luas: 2660, keterangan: 'Lereng Trap 1'},
+            {no: 230, start: 427950, end: 428160, jalur: 'A', lebar: 8, panjang: 210, luas: 1680, keterangan: 'Lereng Trap 1'},
+            {no: 231, start: 429050, end: 429380, jalur: 'A', lebar: 5, panjang: 330, luas: 1650, keterangan: 'Lereng Trap 1'},
+            {no: 234, start: 430550, end: 430900, jalur: 'A', lebar: 5, panjang: 350, luas: 1750, keterangan: 'Lereng Trap 1'},
+            {no: 235, start: 432000, end: 432600, jalur: 'A', lebar: 4, panjang: 600, luas: 2400, keterangan: 'Lereng Trap 1'},
+            {no: 236, start: 433000, end: 433200, jalur: 'A', lebar: 7, panjang: 200, luas: 1400, keterangan: 'Lereng Trap 1'},
+            {no: 237, start: 434750, end: 435000, jalur: 'A', lebar: 8, panjang: 250, luas: 2000, keterangan: 'Lereng Trap 1'},
+            {no: 238, start: 436050, end: 436500, jalur: 'A', lebar: 8, panjang: 450, luas: 3600, keterangan: 'Lereng Trap 1'},
+            {no: 240, start: 437400, end: 438300, jalur: 'A', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Lereng Trap 1'},
+            {no: 241, start: 438300, end: 438790, jalur: 'A', lebar: 8, panjang: 490, luas: 3920, keterangan: 'Lereng Trap 1'},
+            {no: 242, start: 439190, end: 439650, jalur: 'A', lebar: 10, panjang: 460, luas: 4600, keterangan: 'Lereng Trap 1'},
+            {no: 243, start: 441800, end: 442210, jalur: 'A', lebar: 7, panjang: 410, luas: 2870, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 244, start: 442550, end: 442800, jalur: 'A', lebar: 8, panjang: 250, luas: 2000, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 245, start: 443000, end: 443400, jalur: 'A', lebar: 7, panjang: 400, luas: 2800, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 246, start: 443900, end: 444050, jalur: 'A', lebar: 8, panjang: 150, luas: 1200, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 247, start: 444170, end: 444400, jalur: 'A', lebar: 8, panjang: 230, luas: 1840, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 248, start: 444450, end: 444700, jalur: 'A', lebar: 11, panjang: 250, luas: 2750, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 249, start: 442200, end: 442300, jalur: 'A', lebar: 9, panjang: 100, luas: 900, keterangan: 'Lereng Trap 1'},
+            {no: 250, start: 442600, end: 443100, jalur: 'A', lebar: 9, panjang: 500, luas: 4500, keterangan: 'Lereng Trap 1'},
+            {no: 251, start: 444800, end: 445150, jalur: 'A', lebar: 9, panjang: 350, luas: 3150, keterangan: 'Lereng Trap 1'},
+            {no: 252, start: 445300, end: 445700, jalur: 'A', lebar: 8, panjang: 400, luas: 3200, keterangan: 'Lereng Trap 1'},
+            {no: 253, start: 446450, end: 446750, jalur: 'A', lebar: 6, panjang: 300, luas: 1800, keterangan: 'Lereng Trap 1'},
+            {no: 254, start: 447450, end: 448000, jalur: 'A', lebar: 9, panjang: 550, luas: 4950, keterangan: 'Lereng Trap 1'},
+            {no: 255, start: 448950, end: 449650, jalur: 'A', lebar: 10, panjang: 700, luas: 7000, keterangan: 'Lereng Trap 1'},
+            {no: 256, start: 450000, end: 450100, jalur: 'A', lebar: 9, panjang: 100, luas: 900, keterangan: 'Lereng Trap 1'},
+            {no: 257, start: 450300, end: 450400, jalur: 'A', lebar: 9, panjang: 100, luas: 900, keterangan: 'Lereng Trap 1'},
+            {no: 258, start: 450450, end: 451000, jalur: 'A', lebar: 9, panjang: 550, luas: 4950, keterangan: 'Lereng Trap 1'},
+            {no: 259, start: 451050, end: 451150, jalur: 'A', lebar: 4, panjang: 100, luas: 400, keterangan: 'Lereng Trap 1'},
+            {no: 260, start: 451180, end: 451250, jalur: 'A', lebar: 7, panjang: 70, luas: 490, keterangan: 'Lereng Trap 1'},
+            {no: 261, start: 452800, end: 453100, jalur: 'A', lebar: 5, panjang: 300, luas: 1500, keterangan: 'Lereng Trap 1'},
+            {no: 262, start: 453100, end: 453700, jalur: 'A', lebar: 9, panjang: 600, luas: 5400, keterangan: 'Lereng Trap 1'},
+            {no: 263, start: 453900, end: 454200, jalur: 'A', lebar: 8, panjang: 300, luas: 2400, keterangan: 'Lereng Trap 1'},
+            {no: 264, start: 455650, end: 455900, jalur: 'A', lebar: 9, panjang: 250, luas: 2250, keterangan: 'Lereng Trap 1'},
+            {no: 265, start: 457400, end: 457550, jalur: 'A', lebar: 4, panjang: 150, luas: 600, keterangan: 'Lereng Trap 1'},
+            {no: 266, start: 457950, end: 458100, jalur: 'A', lebar: 8, panjang: 150, luas: 1200, keterangan: 'Lereng Trap 1'},
+            {no: 267, start: 458100, end: 458250, jalur: 'A', lebar: 6, panjang: 150, luas: 900, keterangan: 'Lereng Trap 1'},
+            {no: 268, start: 458320, end: 458500, jalur: 'A', lebar: 6, panjang: 180, luas: 1080, keterangan: 'Lereng Trap 1'},
+            {no: 269, start: 458050, end: 458350, jalur: 'B', lebar: 8, panjang: 300, luas: 2400, keterangan: 'Lereng Trap 1'},
+            {no: 270, start: 457950, end: 458050, jalur: 'B', lebar: 8, panjang: 100, luas: 800, keterangan: 'Lereng Trap 1'},
+            {no: 271, start: 454250, end: 454600, jalur: 'B', lebar: 9, panjang: 350, luas: 3150, keterangan: 'Lereng Trap 1'},
+            {no: 272, start: 453930, end: 454000, jalur: 'B', lebar: 9, panjang: 70, luas: 630, keterangan: 'Lereng Trap 1'},
+            {no: 273, start: 453200, end: 453750, jalur: 'B', lebar: 9, panjang: 550, luas: 4950, keterangan: 'Lereng Trap 1'},
+            {no: 274, start: 452900, end: 453299, jalur: 'B', lebar: 6, panjang: 399, luas: 2394, keterangan: 'Lereng Trap 1'},
+            {no: 275, start: 451600, end: 451800, jalur: 'B', lebar: 9, panjang: 200, luas: 1800, keterangan: 'Lereng Trap 1'},
+            {no: 276, start: 451050, end: 451300, jalur: 'B', lebar: 9, panjang: 250, luas: 2250, keterangan: 'Lereng Trap 1'},
+            {no: 277, start: 450300, end: 450500, jalur: 'B', lebar: 9, panjang: 200, luas: 1800, keterangan: 'Lereng Trap 1'},
+            {no: 278, start: 450100, end: 450250, jalur: 'B', lebar: 9, panjang: 150, luas: 1350, keterangan: 'Lereng Trap 1'},
+            {no: 279, start: 448950, end: 449600, jalur: 'B', lebar: 9, panjang: 650, luas: 5850, keterangan: 'Lereng Trap 1'},
+            {no: 280, start: 447450, end: 448000, jalur: 'B', lebar: 9, panjang: 550, luas: 4950, keterangan: 'Lereng Trap 1'},
+            {no: 281, start: 446230, end: 446700, jalur: 'B', lebar: 9, panjang: 470, luas: 4230, keterangan: 'Lereng Trap 1'},
+            {no: 282, start: 445450, end: 445700, jalur: 'B', lebar: 8, panjang: 250, luas: 2000, keterangan: 'Lereng Trap 1'},
+            {no: 283, start: 444800, end: 445100, jalur: 'B', lebar: 8, panjang: 300, luas: 2400, keterangan: 'Lereng Trap 1'},
+            {no: 284, start: 443100, end: 443150, jalur: 'B', lebar: 8, panjang: 50, luas: 400, keterangan: 'Lereng Trap 1'},
+            {no: 286, start: 444200, end: 444660, jalur: 'B', lebar: 13, panjang: 460, luas: 5980, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 288, start: 443000, end: 443500, jalur: 'B', lebar: 5, panjang: 500, luas: 2500, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 289, start: 442800, end: 443000, jalur: 'B', lebar: 4, panjang: 200, luas: 800, keterangan: 'Lereng Trap 1 Akses Bawen'},
+            {no: 291, start: 441200, end: 441350, jalur: 'B', lebar: 3, panjang: 150, luas: 450, keterangan: 'Lereng Trap 1'},
+            {no: 292, start: 440230, end: 440300, jalur: 'B', lebar: 5, panjang: 70, luas: 350, keterangan: 'Lereng Trap 1'},
+            {no: 293, start: 439960, end: 440050, jalur: 'B', lebar: 4, panjang: 90, luas: 360, keterangan: 'Lereng Trap 1'},
+            {no: 294, start: 439150, end: 439600, jalur: 'B', lebar: 10, panjang: 450, luas: 4500, keterangan: 'Lereng Trap 1'},
+            {no: 295, start: 438440, end: 438550, jalur: 'B', lebar: 3.5, panjang: 110, luas: 385, keterangan: 'Lereng Trap 1'},
+            {no: 296, start: 438360, end: 438420, jalur: 'B', lebar: 8, panjang: 60, luas: 480, keterangan: 'Lereng Trap 1'},
+            {no: 297, start: 437360, end: 438250, jalur: 'B', lebar: 3, panjang: 890, luas: 2670, keterangan: 'Lereng Trap 1'},
+            {no: 298, start: 436800, end: 436950, jalur: 'B', lebar: 8, panjang: 150, luas: 1200, keterangan: 'Lereng Trap 1'},
+            {no: 299, start: 436680, end: 436800, jalur: 'B', lebar: 5, panjang: 120, luas: 600, keterangan: 'Lereng Trap 1'},
+            {no: 300, start: 436300, end: 436680, jalur: 'B', lebar: 8, panjang: 380, luas: 3040, keterangan: 'Lereng Trap 1'},
+            {no: 301, start: 434650, end: 434950, jalur: 'B', lebar: 8, panjang: 300, luas: 2400, keterangan: 'Lereng Trap 1'},
+            {no: 302, start: 433220, end: 433500, jalur: 'B', lebar: 8, panjang: 280, luas: 2240, keterangan: 'Lereng Trap 1'},
+            {no: 303, start: 432930, end: 433030, jalur: 'B', lebar: 4, panjang: 100, luas: 400, keterangan: 'Lereng Trap 1'},
+            {no: 304, start: 431500, end: 431600, jalur: 'B', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Lereng Trap 1'},
+            {no: 305, start: 431350, end: 431700, jalur: 'B', lebar: 6, panjang: 350, luas: 2100, keterangan: 'Lereng Trap 1'},
+            {no: 306, start: 430900, end: 431000, jalur: 'B', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Lereng Trap 1'},
+            {no: 307, start: 430550, end: 430750, jalur: 'B', lebar: 6, panjang: 200, luas: 1200, keterangan: 'Lereng Trap 1'},
+            {no: 308, start: 428700, end: 429400, jalur: 'B', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Lereng Trap 1'},
+            {no: 309, start: 427850, end: 428150, jalur: 'B', lebar: 8, panjang: 300, luas: 2400, keterangan: 'Lereng Trap 1'},
+            {no: 310, start: 426600, end: 427380, jalur: 'B', lebar: 6, panjang: 780, luas: 4680, keterangan: 'Lereng Trap 1'},
+            {no: 311, start: 426500, end: 426600, jalur: 'B', lebar: 8, panjang: 100, luas: 800, keterangan: 'Lereng Trap 1'},
+            {no: 312, start: 426450, end: 426500, jalur: 'B', lebar: 7, panjang: 50, luas: 350, keterangan: 'Lereng Trap 1'},
+            {no: 313, start: 426250, end: 426400, jalur: 'B', lebar: 8, panjang: 150, luas: 1200, keterangan: 'Lereng Trap 1'},
+            {no: 314, start: 426300, end: 426400, jalur: 'B', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Lereng Trap 1'},
+            {no: 315, start: 424200, end: 424870, jalur: 'B', lebar: 8, panjang: 670, luas: 5360, keterangan: 'Lereng Trap 1'},
+            {no: 316, start: 424000, end: 424200, jalur: 'B', lebar: 4, panjang: 200, luas: 800, keterangan: 'Lereng Trap 1'},
+            {no: 317, start: 423600, end: 423700, jalur: 'B', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Lereng Trap 1'},
+            {no: 318, start: 423600, end: 423850, jalur: 'B', lebar: 7, panjang: 250, luas: 1750, keterangan: 'Lereng Trap 1'},
+            {no: 319, start: 423000, end: 423100, jalur: 'B', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Lereng Trap 1'},
+            {no: 320, start: 422900, end: 423000, jalur: 'B', lebar: 6, panjang: 100, luas: 600, keterangan: 'Lereng Trap 1'},
+            {no: 321, start: 421300, end: 421700, jalur: 'B', lebar: 11, panjang: 400, luas: 4400, keterangan: 'Lereng Trap 1'},
+            {no: 322, start: 421200, end: 421300, jalur: 'B', lebar: 6, panjang: 100, luas: 600, keterangan: 'Lereng Trap 1'},
+            {no: 323, start: 420125, end: 420275, jalur: 'B', lebar: 7, panjang: 150, luas: 1050, keterangan: 'Lereng Trap 1'},
+            {no: 325, start: 460200, end: 460500, jalur: 'B', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4 Akses salatiga'},
+            {no: 326, start: 459400, end: 460000, jalur: 'B', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4 Akses salatiga'},
+            {no: 327, start: 457950, end: 458550, jalur: 'B', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 328, start: 457350, end: 457500, jalur: 'B', lebar: 1.5, panjang: 150, luas: 225, keterangan: 'Saluran DS 4'},
+            {no: 329, start: 457000, end: 457300, jalur: 'B', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 330, start: 455700, end: 455750, jalur: 'B', lebar: 1.5, panjang: 50, luas: 75, keterangan: 'Saluran DS 4'},
+            {no: 331, start: 454650, end: 455000, jalur: 'B', lebar: 1.5, panjang: 350, luas: 525, keterangan: 'Saluran DS 4'},
+            {no: 332, start: 454250, end: 454600, jalur: 'B', lebar: 1.5, panjang: 350, luas: 525, keterangan: 'Saluran DS 4'},
+            {no: 333, start: 453900, end: 454190, jalur: 'B', lebar: 1.5, panjang: 290, luas: 435, keterangan: 'Saluran DS 4'},
+            {no: 334, start: 452850, end: 453700, jalur: 'B', lebar: 1.5, panjang: 850, luas: 1275, keterangan: 'Saluran DS 4'},
+            {no: 335, start: 451600, end: 451850, jalur: 'B', lebar: 1.5, panjang: 250, luas: 375, keterangan: 'Saluran DS 4'},
+            {no: 336, start: 450050, end: 451400, jalur: 'B', lebar: 1.5, panjang: 1350, luas: 2025, keterangan: 'Saluran DS 4'},
+            {no: 337, start: 448800, end: 449630, jalur: 'B', lebar: 1.5, panjang: 830, luas: 1245, keterangan: 'Saluran DS 4'},
+            {no: 338, start: 447450, end: 448300, jalur: 'B', lebar: 1.5, panjang: 850, luas: 1275, keterangan: 'Saluran DS 4'},
+            {no: 339, start: 446260, end: 447430, jalur: 'B', lebar: 1.5, panjang: 1170, luas: 1755, keterangan: 'Saluran DS 4'},
+            {no: 340, start: 445350, end: 445660, jalur: 'B', lebar: 1.5, panjang: 310, luas: 465, keterangan: 'Saluran DS 4'},
+            {no: 341, start: 444650, end: 445220, jalur: 'B', lebar: 1.5, panjang: 570, luas: 855, keterangan: 'Saluran DS 4'},
+            {no: 342, start: 443650, end: 444150, jalur: 'B', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Saluran DS 4'},
+            {no: 343, start: 442500, end: 443380, jalur: 'B', lebar: 1.5, panjang: 880, luas: 1320, keterangan: 'Saluran DS 4'},
+            {no: 344, start: 444850, end: 445000, jalur: 'B', lebar: 1.5, panjang: 150, luas: 225, keterangan: 'Saluran DS 4 Akses Bawen'},
+            {no: 345, start: 444200, end: 444700, jalur: 'B', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Saluran DS 4 Akses Bawen'},
+            {no: 346, start: 442900, end: 443900, jalur: 'B', lebar: 1.5, panjang: 1000, luas: 1500, keterangan: 'Saluran DS 4 Akses Bawen'},
+            {no: 347, start: 441700, end: 442000, jalur: 'B', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 348, start: 441200, end: 441300, jalur: 'B', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 349, start: 440200, end: 440300, jalur: 'B', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 350, start: 439900, end: 440050, jalur: 'B', lebar: 1.5, panjang: 150, luas: 225, keterangan: 'Saluran DS 4'},
+            {no: 351, start: 439100, end: 439700, jalur: 'B', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 352, start: 437300, end: 438800, jalur: 'B', lebar: 1.5, panjang: 1500, luas: 2250, keterangan: 'Saluran DS 4'},
+            {no: 353, start: 435500, end: 437000, jalur: 'B', lebar: 1.5, panjang: 1500, luas: 2250, keterangan: 'Saluran DS 4'},
+            {no: 354, start: 434600, end: 435150, jalur: 'B', lebar: 1.5, panjang: 550, luas: 825, keterangan: 'Saluran DS 4'},
+            {no: 355, start: 432800, end: 433600, jalur: 'B', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 356, start: 431300, end: 431800, jalur: 'B', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Saluran DS 4'},
+            {no: 357, start: 430100, end: 431100, jalur: 'B', lebar: 1.5, panjang: 1000, luas: 1500, keterangan: 'Saluran DS 4'},
+            {no: 359, start: 428600, end: 429400, jalur: 'B', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 360, start: 427850, end: 428200, jalur: 'B', lebar: 1.5, panjang: 350, luas: 525, keterangan: 'Saluran DS 4'},
+            {no: 361, start: 426250, end: 427400, jalur: 'B', lebar: 1.5, panjang: 1150, luas: 1725, keterangan: 'Saluran DS 4'},
+            {no: 362, start: 425150, end: 425450, jalur: 'B', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 363, start: 424000, end: 425000, jalur: 'B', lebar: 1.5, panjang: 1000, luas: 1500, keterangan: 'Saluran DS 4'},
+            {no: 364, start: 423600, end: 423850, jalur: 'B', lebar: 1.5, panjang: 250, luas: 375, keterangan: 'Saluran DS 4'},
+            {no: 365, start: 422850, end: 423050, jalur: 'B', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 366, start: 422300, end: 422400, jalur: 'B', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 367, start: 421100, end: 421700, jalur: 'B', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 368, start: 420400, end: 420800, jalur: 'B', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 370, start: 419600, end: 420100, jalur: 'B', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Saluran DS 4'},
+            {no: 371, start: 419300, end: 419500, jalur: 'B', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 372, start: 419600, end: 420100, jalur: 'A', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Saluran DS 4'},
+            {no: 374, start: 420400, end: 420800, jalur: 'A', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 375, start: 421100, end: 421700, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 376, start: 422300, end: 422400, jalur: 'A', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 377, start: 422850, end: 423050, jalur: 'A', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 378, start: 423600, end: 423800, jalur: 'A', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 379, start: 424200, end: 425000, jalur: 'A', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 380, start: 426250, end: 427400, jalur: 'A', lebar: 1.5, panjang: 1150, luas: 1725, keterangan: 'Saluran DS 4'},
+            {no: 381, start: 427900, end: 428200, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 382, start: 428650, end: 429400, jalur: 'A', lebar: 1.5, panjang: 750, luas: 1125, keterangan: 'Saluran DS 4'},
+            {no: 383, start: 430550, end: 431000, jalur: 'A', lebar: 1.5, panjang: 450, luas: 675, keterangan: 'Saluran DS 4'},
+            {no: 384, start: 432900, end: 433900, jalur: 'A', lebar: 1.5, panjang: 1000, luas: 1500, keterangan: 'Saluran DS 4'},
+            {no: 385, start: 434600, end: 435200, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 386, start: 436150, end: 436850, jalur: 'A', lebar: 1.5, panjang: 700, luas: 1050, keterangan: 'Saluran DS 4'},
+            {no: 387, start: 437300, end: 438800, jalur: 'A', lebar: 1.5, panjang: 1500, luas: 2250, keterangan: 'Saluran DS 4'},
+            {no: 388, start: 439200, end: 440050, jalur: 'A', lebar: 1.5, panjang: 850, luas: 1275, keterangan: 'Saluran DS 4'},
+            {no: 389, start: 440300, end: 440400, jalur: 'A', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 390, start: 441200, end: 441300, jalur: 'A', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 391, start: 441700, end: 442000, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 392, start: 442500, end: 442750, jalur: 'A', lebar: 1.5, panjang: 250, luas: 375, keterangan: 'Saluran DS 4 Akses Bawen'},
+            {no: 393, start: 442900, end: 444100, jalur: 'A', lebar: 1.5, panjang: 1200, luas: 1800, keterangan: 'Saluran DS 4 Akses Bawen'},
+            {no: 394, start: 444200, end: 444700, jalur: 'A', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Saluran DS 4 Akses Bawen'},
+            {no: 396, start: 442550, end: 443100, jalur: 'A', lebar: 1.5, panjang: 550, luas: 825, keterangan: 'Saluran DS 4'},
+            {no: 397, start: 443500, end: 444300, jalur: 'A', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 398, start: 444650, end: 445750, jalur: 'A', lebar: 1.5, panjang: 1100, luas: 1650, keterangan: 'Saluran DS 4'},
+            {no: 399, start: 446300, end: 446900, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 400, start: 447450, end: 448300, jalur: 'A', lebar: 1.5, panjang: 850, luas: 1275, keterangan: 'Saluran DS 4'},
+            {no: 401, start: 448800, end: 449650, jalur: 'A', lebar: 1.5, panjang: 850, luas: 1275, keterangan: 'Saluran DS 4'},
+            {no: 402, start: 450000, end: 451300, jalur: 'A', lebar: 1.5, panjang: 1300, luas: 1950, keterangan: 'Saluran DS 4'},
+            {no: 403, start: 452800, end: 453700, jalur: 'A', lebar: 1.5, panjang: 900, luas: 1350, keterangan: 'Saluran DS 4'},
+            {no: 404, start: 453900, end: 454650, jalur: 'A', lebar: 1.5, panjang: 750, luas: 1125, keterangan: 'Saluran DS 4'},
+            {no: 405, start: 455150, end: 455550, jalur: 'A', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 406, start: 455600, end: 455900, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 407, start: 456400, end: 456700, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 408, start: 456700, end: 457050, jalur: 'A', lebar: 1.5, panjang: 350, luas: 525, keterangan: 'Saluran DS 4'},
+            {no: 409, start: 457100, end: 457400, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 410, start: 457600, end: 457850, jalur: 'A', lebar: 1.5, panjang: 250, luas: 375, keterangan: 'Saluran DS 4'},
+            {no: 411, start: 457850, end: 458550, jalur: 'A', lebar: 1.5, panjang: 700, luas: 1050, keterangan: 'Saluran DS 4'},
+            {no: 412, start: 459400, end: 460000, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4 Akses salatiga'},
+            {no: 413, start: 460200, end: 460500, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4 Akses salatiga'},
+            {no: 414, start: 459500, end: 460600, jalur: 'A', lebar: 2.5, panjang: 1100, luas: 2750, keterangan: 'Rounding '},
+            {no: 415, start: 460600, end: 460800, jalur: 'A', lebar: 3.5, panjang: 200, luas: 700, keterangan: 'Rounding '},
+            {no: 416, start: 460800, end: 461000, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding '},
+            {no: 417, start: 461000, end: 462250, jalur: 'A', lebar: 3, panjang: 1250, luas: 3750, keterangan: 'Rounding '},
+            {no: 418, start: 462250, end: 463000, jalur: 'A', lebar: 3.5, panjang: 750, luas: 2625, keterangan: 'Rounding '},
+            {no: 419, start: 463000, end: 463800, jalur: 'A', lebar: 3.5, panjang: 800, luas: 2800, keterangan: 'Rounding '},
+            {no: 420, start: 463800, end: 464750, jalur: 'A', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Rounding '},
+            {no: 421, start: 464750, end: 466100, jalur: 'A', lebar: 3.5, panjang: 1350, luas: 4725, keterangan: 'Rounding '},
+            {no: 422, start: 466100, end: 467250, jalur: 'A', lebar: 3, panjang: 1150, luas: 3450, keterangan: 'Rounding '},
+            {no: 423, start: 467750, end: 468550, jalur: 'A', lebar: 3, panjang: 800, luas: 2400, keterangan: 'Rounding '},
+            {no: 424, start: 468550, end: 468850, jalur: 'A', lebar: 3.5, panjang: 300, luas: 1050, keterangan: 'Rounding '},
+            {no: 425, start: 468850, end: 469100, jalur: 'A', lebar: 3.5, panjang: 250, luas: 875, keterangan: 'Rounding '},
+            {no: 426, start: 468100, end: 469160, jalur: 'A', lebar: 3, panjang: 1060, luas: 3180, keterangan: 'Rounding '},
+            {no: 427, start: 469160, end: 469750, jalur: 'A', lebar: 3.5, panjang: 590, luas: 2065, keterangan: 'Rounding '},
+            {no: 428, start: 469750, end: 470000, jalur: 'A', lebar: 3.5, panjang: 250, luas: 875, keterangan: 'Rounding '},
+            {no: 429, start: 470000, end: 470500, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Rounding '},
+            {no: 430, start: 470500, end: 471200, jalur: 'A', lebar: 3.5, panjang: 700, luas: 2450, keterangan: 'Rounding '},
+            {no: 431, start: 471200, end: 471900, jalur: 'A', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Rounding '},
+            {no: 432, start: 472150, end: 474750, jalur: 'A', lebar: 3, panjang: 2600, luas: 7800, keterangan: 'Rounding '},
+            {no: 433, start: 474950, end: 475150, jalur: 'A', lebar: 2.5, panjang: 200, luas: 500, keterangan: 'Rounding '},
+            {no: 434, start: 475500, end: 475600, jalur: 'A', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Rounding '},
+            {no: 435, start: 475700, end: 476650, jalur: 'A', lebar: 2.5, panjang: 950, luas: 2375, keterangan: 'Rounding '},
+            {no: 436, start: 476740, end: 477650, jalur: 'A', lebar: 1.5, panjang: 910, luas: 1365, keterangan: 'Rounding '},
+            {no: 437, start: 477700, end: 478200, jalur: 'A', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding '},
+            {no: 438, start: 478250, end: 479500, jalur: 'A', lebar: 2.5, panjang: 1250, luas: 3125, keterangan: 'Rounding '},
+            {no: 439, start: 479550, end: 480050, jalur: 'A', lebar: 6, panjang: 500, luas: 3000, keterangan: 'Rounding '},
+            {no: 440, start: 480100, end: 480650, jalur: 'A', lebar: 2.5, panjang: 550, luas: 1375, keterangan: 'Rounding '},
+            {no: 441, start: 480800, end: 482450, jalur: 'A', lebar: 3, panjang: 1650, luas: 4950, keterangan: 'Rounding '},
+            {no: 442, start: 482500, end: 484100, jalur: 'A', lebar: 3, panjang: 1600, luas: 4800, keterangan: 'Rounding '},
+            {no: 445, start: 484100, end: 484500, jalur: 'A', lebar: 3.5, panjang: 400, luas: 1400, keterangan: 'Rounding '},
+            {no: 446, start: 484550, end: 484900, jalur: 'A', lebar: 3, panjang: 350, luas: 1050, keterangan: 'Rounding '},
+            {no: 447, start: 485000, end: 487400, jalur: 'A', lebar: 3, panjang: 2400, luas: 7200, keterangan: 'Rounding '},
+            {no: 448, start: 487400, end: 487600, jalur: 'A', lebar: 1, panjang: 200, luas: 200, keterangan: 'Rounding '},
+            {no: 449, start: 487600, end: 492000, jalur: 'A', lebar: 2.7, panjang: 4400, luas: 11880, keterangan: 'Rounding '},
+            {no: 450, start: 486950, end: 492000, jalur: 'B', lebar: 2.7, panjang: 5050, luas: 13635, keterangan: 'Rounding '},
+            {no: 451, start: 486400, end: 486900, jalur: 'B', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Rounding '},
+            {no: 452, start: 484950, end: 486350, jalur: 'B', lebar: 3, panjang: 1400, luas: 4200, keterangan: 'Rounding '},
+            {no: 453, start: 484550, end: 484900, jalur: 'B', lebar: 3.5, panjang: 350, luas: 1225, keterangan: 'Rounding '},
+            {no: 454, start: 483400, end: 484500, jalur: 'B', lebar: 3.5, panjang: 1100, luas: 3850, keterangan: 'Rounding '},
+            {no: 457, start: 482500, end: 483400, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Rounding '},
+            {no: 458, start: 481650, end: 482500, jalur: 'B', lebar: 2.5, panjang: 850, luas: 2125, keterangan: 'Rounding '},
+            {no: 459, start: 480800, end: 481650, jalur: 'B', lebar: 3.5, panjang: 850, luas: 2975, keterangan: 'Rounding '},
+            {no: 460, start: 480500, end: 480700, jalur: 'B', lebar: 3.5, panjang: 200, luas: 700, keterangan: 'Rounding '},
+            {no: 461, start: 480000, end: 480500, jalur: 'B', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding '},
+            {no: 462, start: 479500, end: 480000, jalur: 'B', lebar: 3.5, panjang: 500, luas: 1750, keterangan: 'Rounding '},
+            {no: 463, start: 478250, end: 479500, jalur: 'B', lebar: 2.5, panjang: 1250, luas: 3125, keterangan: 'Rounding '},
+            {no: 464, start: 477700, end: 478200, jalur: 'B', lebar: 2.5, panjang: 500, luas: 1250, keterangan: 'Rounding '},
+            {no: 465, start: 476750, end: 477650, jalur: 'B', lebar: 2.5, panjang: 900, luas: 2250, keterangan: 'Rounding '},
+            {no: 466, start: 475700, end: 476650, jalur: 'B', lebar: 2.5, panjang: 950, luas: 2375, keterangan: 'Rounding '},
+            {no: 467, start: 475500, end: 475600, jalur: 'B', lebar: 3.5, panjang: 100, luas: 350, keterangan: 'Rounding '},
+            {no: 468, start: 474950, end: 475150, jalur: 'B', lebar: 3, panjang: 200, luas: 600, keterangan: 'Rounding '},
+            {no: 469, start: 473900, end: 474750, jalur: 'B', lebar: 3, panjang: 850, luas: 2550, keterangan: 'Rounding '},
+            {no: 470, start: 472150, end: 473900, jalur: 'B', lebar: 3, panjang: 1750, luas: 5250, keterangan: 'Rounding '},
+            {no: 471, start: 471150, end: 471950, jalur: 'B', lebar: 3, panjang: 800, luas: 2400, keterangan: 'Rounding '},
+            {no: 472, start: 467750, end: 471150, jalur: 'B', lebar: 3, panjang: 3400, luas: 10200, keterangan: 'Rounding '},
+            {no: 473, start: 466800, end: 467250, jalur: 'B', lebar: 3.5, panjang: 450, luas: 1575, keterangan: 'Rounding '},
+            {no: 474, start: 465050, end: 466800, jalur: 'B', lebar: 3, panjang: 1750, luas: 5250, keterangan: 'Rounding '},
+            {no: 475, start: 464300, end: 465050, jalur: 'B', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Rounding '},
+            {no: 476, start: 459500, end: 464300, jalur: 'B', lebar: 3, panjang: 4800, luas: 14400, keterangan: 'Rounding '},
+            {no: 477, start: 459500, end: 460600, jalur: 'A', lebar: 3, panjang: 1100, luas: 3300, keterangan: 'Gulma '},
+            {no: 478, start: 460800, end: 461000, jalur: 'A', lebar: 3, panjang: 200, luas: 600, keterangan: 'Gulma '},
+            {no: 479, start: 462250, end: 463000, jalur: 'A', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Gulma '},
+            {no: 480, start: 463800, end: 464750, jalur: 'A', lebar: 3.5, panjang: 950, luas: 3325, keterangan: 'Gulma '},
+            {no: 481, start: 466100, end: 467250, jalur: 'A', lebar: 3, panjang: 1150, luas: 3450, keterangan: 'Gulma '},
+            {no: 482, start: 467800, end: 468550, jalur: 'A', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Gulma '},
+            {no: 483, start: 468850, end: 469100, jalur: 'A', lebar: 3, panjang: 250, luas: 750, keterangan: 'Gulma '},
+            {no: 484, start: 469160, end: 469250, jalur: 'A', lebar: 2, panjang: 90, luas: 180, keterangan: 'Gulma '},
+            {no: 485, start: 469320, end: 469500, jalur: 'A', lebar: 2, panjang: 180, luas: 360, keterangan: 'Gulma '},
+            {no: 486, start: 469750, end: 470500, jalur: 'A', lebar: 3, panjang: 750, luas: 2250, keterangan: 'Gulma '},
+            {no: 487, start: 471200, end: 471900, jalur: 'A', lebar: 3, panjang: 700, luas: 2100, keterangan: 'Gulma '},
+            {no: 488, start: 472150, end: 474750, jalur: 'A', lebar: 3, panjang: 2600, luas: 7800, keterangan: 'Gulma '},
+            {no: 489, start: 474950, end: 475150, jalur: 'A', lebar: 3.5, panjang: 200, luas: 700, keterangan: 'Gulma '},
+            {no: 490, start: 475700, end: 476650, jalur: 'A', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Gulma '},
+            {no: 491, start: 476740, end: 477650, jalur: 'A', lebar: 3, panjang: 910, luas: 2730, keterangan: 'Gulma '},
+            {no: 492, start: 477700, end: 478200, jalur: 'A', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma '},
+            {no: 493, start: 478250, end: 479500, jalur: 'A', lebar: 3, panjang: 1250, luas: 3750, keterangan: 'Gulma '},
+            {no: 494, start: 480200, end: 480550, jalur: 'A', lebar: 3, panjang: 350, luas: 1050, keterangan: 'Gulma '},
+            {no: 495, start: 481750, end: 482300, jalur: 'A', lebar: 3, panjang: 550, luas: 1650, keterangan: 'Gulma '},
+            {no: 496, start: 482100, end: 484100, jalur: 'A', lebar: 3, panjang: 2000, luas: 6000, keterangan: 'Gulma '},
+            {no: 497, start: 484550, end: 484900, jalur: 'A', lebar: 3, panjang: 350, luas: 1050, keterangan: 'Gulma '},
+            {no: 498, start: 491035, end: 492000, jalur: 'A', lebar: 10, panjang: 965, luas: 9650, keterangan: 'Gulma Median'},
+            {no: 499, start: 491400, end: 492000, jalur: 'A', lebar: 3, panjang: 600, luas: 1800, keterangan: 'Gulma '},
+            {no: 500, start: 491400, end: 492000, jalur: 'B', lebar: 3, panjang: 600, luas: 1800, keterangan: 'Gulma '},
+            {no: 501, start: 483400, end: 484500, jalur: 'B', lebar: 3.5, panjang: 1100, luas: 3850, keterangan: 'Gulma '},
+            {no: 502, start: 482500, end: 484400, jalur: 'B', lebar: 2.5, panjang: 1900, luas: 4750, keterangan: 'Gulma '},
+            {no: 503, start: 481650, end: 482450, jalur: 'B', lebar: 3, panjang: 800, luas: 2400, keterangan: 'Gulma '},
+            {no: 504, start: 480500, end: 480700, jalur: 'B', lebar: 3, panjang: 200, luas: 600, keterangan: 'Gulma '},
+            {no: 505, start: 480000, end: 480500, jalur: 'B', lebar: 3.5, panjang: 500, luas: 1750, keterangan: 'Gulma '},
+            {no: 506, start: 478250, end: 479500, jalur: 'B', lebar: 3.5, panjang: 1250, luas: 4375, keterangan: 'Gulma '},
+            {no: 507, start: 477700, end: 478200, jalur: 'B', lebar: 3, panjang: 500, luas: 1500, keterangan: 'Gulma '},
+            {no: 508, start: 476750, end: 477650, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Gulma '},
+            {no: 509, start: 475700, end: 476650, jalur: 'B', lebar: 3, panjang: 950, luas: 2850, keterangan: 'Gulma '},
+            {no: 510, start: 474950, end: 475150, jalur: 'B', lebar: 3, panjang: 200, luas: 600, keterangan: 'Gulma '},
+            {no: 511, start: 473900, end: 474750, jalur: 'B', lebar: 3, panjang: 850, luas: 2550, keterangan: 'Gulma '},
+            {no: 512, start: 472150, end: 472600, jalur: 'B', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Gulma '},
+            {no: 513, start: 471150, end: 471950, jalur: 'B', lebar: 2.5, panjang: 800, luas: 2000, keterangan: 'Gulma '},
+            {no: 514, start: 467750, end: 470500, jalur: 'B', lebar: 2, panjang: 2750, luas: 5500, keterangan: 'Gulma '},
+            {no: 515, start: 466800, end: 467250, jalur: 'B', lebar: 3.5, panjang: 450, luas: 1575, keterangan: 'Gulma '},
+            {no: 516, start: 466350, end: 466800, jalur: 'B', lebar: 2.5, panjang: 450, luas: 1125, keterangan: 'Gulma '},
+            {no: 517, start: 466100, end: 466350, jalur: 'B', lebar: 4, panjang: 250, luas: 1000, keterangan: 'Gulma '},
+            {no: 518, start: 464800, end: 465050, jalur: 'B', lebar: 2, panjang: 250, luas: 500, keterangan: 'Gulma '},
+            {no: 519, start: 463850, end: 464300, jalur: 'B', lebar: 3, panjang: 450, luas: 1350, keterangan: 'Gulma '},
+            {no: 520, start: 462150, end: 463600, jalur: 'B', lebar: 2.5, panjang: 1450, luas: 3625, keterangan: 'Gulma '},
+            {no: 521, start: 461300, end: 461700, jalur: 'B', lebar: 2.5, panjang: 400, luas: 1000, keterangan: 'Gulma '},
+            {no: 522, start: 460650, end: 460900, jalur: 'B', lebar: 3.5, panjang: 250, luas: 875, keterangan: 'Gulma '},
+            {no: 523, start: 459600, end: 460500, jalur: 'B', lebar: 3, panjang: 900, luas: 2700, keterangan: 'Gulma '},
+            {no: 524, start: 459600, end: 460560, jalur: 'A', lebar: 11, panjang: 960, luas: 10560, keterangan: 'Lereng '},
+            {no: 525, start: 460800, end: 460950, jalur: 'A', lebar: 3, panjang: 150, luas: 450, keterangan: 'Lereng '},
+            {no: 526, start: 462300, end: 462750, jalur: 'A', lebar: 4, panjang: 450, luas: 1800, keterangan: 'Lereng '},
+            {no: 527, start: 462900, end: 463000, jalur: 'A', lebar: 2, panjang: 100, luas: 200, keterangan: 'Lereng '},
+            {no: 528, start: 466200, end: 466350, jalur: 'A', lebar: 3, panjang: 150, luas: 450, keterangan: 'Lereng '},
+            {no: 529, start: 466470, end: 467200, jalur: 'A', lebar: 8, panjang: 730, luas: 5840, keterangan: 'Lereng '},
+            {no: 530, start: 467810, end: 468500, jalur: 'A', lebar: 11, panjang: 690, luas: 7590, keterangan: 'Lereng '},
+            {no: 531, start: 468850, end: 468950, jalur: 'A', lebar: 6, panjang: 100, luas: 600, keterangan: 'Lereng '},
+            {no: 532, start: 468950, end: 469100, jalur: 'A', lebar: 1, panjang: 150, luas: 150, keterangan: 'Lereng '},
+            {no: 533, start: 469120, end: 469250, jalur: 'A', lebar: 4, panjang: 130, luas: 520, keterangan: 'Lereng '},
+            {no: 534, start: 469350, end: 469400, jalur: 'A', lebar: 5, panjang: 50, luas: 250, keterangan: 'Lereng '},
+            {no: 535, start: 470000, end: 470480, jalur: 'A', lebar: 11, panjang: 480, luas: 5280, keterangan: 'Lereng '},
+            {no: 536, start: 471200, end: 471800, jalur: 'A', lebar: 11, panjang: 600, luas: 6600, keterangan: 'Lereng '},
+            {no: 537, start: 472200, end: 472550, jalur: 'A', lebar: 9, panjang: 350, luas: 3150, keterangan: 'Lereng '},
+            {no: 538, start: 472900, end: 473250, jalur: 'A', lebar: 11, panjang: 350, luas: 3850, keterangan: 'Lereng '},
+            {no: 539, start: 473250, end: 473380, jalur: 'A', lebar: 5, panjang: 130, luas: 650, keterangan: 'Lereng '},
+            {no: 540, start: 473550, end: 473700, jalur: 'A', lebar: 2, panjang: 150, luas: 300, keterangan: 'Lereng '},
+            {no: 541, start: 473800, end: 474000, jalur: 'A', lebar: 9, panjang: 200, luas: 1800, keterangan: 'Lereng '},
+            {no: 542, start: 474400, end: 474750, jalur: 'A', lebar: 9, panjang: 350, luas: 3150, keterangan: 'Lereng '},
+            {no: 543, start: 474900, end: 475150, jalur: 'A', lebar: 4, panjang: 250, luas: 1000, keterangan: 'Lereng '},
+            {no: 544, start: 475700, end: 476200, jalur: 'A', lebar: 9, panjang: 500, luas: 4500, keterangan: 'Lereng '},
+            {no: 545, start: 476400, end: 476650, jalur: 'A', lebar: 4, panjang: 250, luas: 1000, keterangan: 'Lereng '},
+            {no: 546, start: 476750, end: 477000, jalur: 'A', lebar: 3, panjang: 250, luas: 750, keterangan: 'Lereng '},
+            {no: 547, start: 477200, end: 478200, jalur: 'A', lebar: 4, panjang: 1000, luas: 4000, keterangan: 'Lereng '},
+            {no: 548, start: 478300, end: 478450, jalur: 'A', lebar: 5, panjang: 150, luas: 750, keterangan: 'Lereng '},
+            {no: 549, start: 478450, end: 479100, jalur: 'A', lebar: 9, panjang: 650, luas: 5850, keterangan: 'Lereng '},
+            {no: 550, start: 482450, end: 482650, jalur: 'A', lebar: 5, panjang: 200, luas: 1000, keterangan: 'Lereng '},
+            {no: 551, start: 482650, end: 483000, jalur: 'A', lebar: 9, panjang: 350, luas: 3150, keterangan: 'Lereng '},
+            {no: 552, start: 483600, end: 483950, jalur: 'A', lebar: 9, panjang: 350, luas: 3150, keterangan: 'Lereng '},
+            {no: 553, start: 491450, end: 491650, jalur: 'A', lebar: 10, panjang: 200, luas: 2000, keterangan: 'Lereng '},
+            {no: 554, start: 491400, end: 491650, jalur: 'B', lebar: 11, panjang: 250, luas: 2750, keterangan: 'Lereng '},
+            {no: 555, start: 484380, end: 484450, jalur: 'B', lebar: 8, panjang: 70, luas: 560, keterangan: 'Lereng '},
+            {no: 556, start: 484150, end: 484300, jalur: 'B', lebar: 8, panjang: 150, luas: 1200, keterangan: 'Lereng'},
+            {no: 557, start: 483700, end: 483950, jalur: 'B', lebar: 11, panjang: 250, luas: 2750, keterangan: 'Lereng'},
+            {no: 558, start: 482700, end: 483000, jalur: 'B', lebar: 9, panjang: 300, luas: 2700, keterangan: 'Lereng '},
+            {no: 559, start: 481800, end: 482420, jalur: 'B', lebar: 6, panjang: 620, luas: 3720, keterangan: 'Lereng '},
+            {no: 560, start: 479200, end: 479400, jalur: 'B', lebar: 2, panjang: 200, luas: 400, keterangan: 'Lereng'},
+            {no: 561, start: 478900, end: 479100, jalur: 'B', lebar: 5, panjang: 200, luas: 1000, keterangan: 'Lereng '},
+            {no: 562, start: 478300, end: 478900, jalur: 'B', lebar: 11, panjang: 600, luas: 6600, keterangan: 'Lereng'},
+            {no: 563, start: 477700, end: 478190, jalur: 'B', lebar: 6, panjang: 490, luas: 2940, keterangan: 'Lereng'},
+            {no: 564, start: 477100, end: 477650, jalur: 'B', lebar: 4, panjang: 550, luas: 2200, keterangan: 'Lereng '},
+            {no: 565, start: 476750, end: 476950, jalur: 'B', lebar: 5, panjang: 200, luas: 1000, keterangan: 'Lereng '},
+            {no: 566, start: 476400, end: 476650, jalur: 'B', lebar: 5, panjang: 250, luas: 1250, keterangan: 'Lereng'},
+            {no: 567, start: 475700, end: 476350, jalur: 'B', lebar: 8, panjang: 650, luas: 5200, keterangan: 'Lereng '},
+            {no: 568, start: 474950, end: 475100, jalur: 'B', lebar: 6, panjang: 150, luas: 900, keterangan: 'Lereng '},
+            {no: 569, start: 474400, end: 474700, jalur: 'B', lebar: 11, panjang: 300, luas: 3300, keterangan: 'Lereng '},
+            {no: 570, start: 473800, end: 474100, jalur: 'B', lebar: 11, panjang: 300, luas: 3300, keterangan: 'Lereng '},
+            {no: 571, start: 473550, end: 473750, jalur: 'B', lebar: 6, panjang: 200, luas: 1200, keterangan: 'Lereng'},
+            {no: 572, start: 472900, end: 473400, jalur: 'B', lebar: 11, panjang: 500, luas: 5500, keterangan: 'Lereng'},
+            {no: 573, start: 472250, end: 472500, jalur: 'B', lebar: 8, panjang: 250, luas: 2000, keterangan: 'Lereng '},
+            {no: 574, start: 471250, end: 471850, jalur: 'B', lebar: 11, panjang: 600, luas: 6600, keterangan: 'Lereng '},
+            {no: 575, start: 470000, end: 470500, jalur: 'B', lebar: 11, panjang: 500, luas: 5500, keterangan: 'Lereng '},
+            {no: 576, start: 469000, end: 469500, jalur: 'B', lebar: 8, panjang: 500, luas: 4000, keterangan: 'Lereng '},
+            {no: 577, start: 467500, end: 468550, jalur: 'B', lebar: 11, panjang: 1050, luas: 11550, keterangan: 'Lereng '},
+            {no: 578, start: 466450, end: 467250, jalur: 'B', lebar: 11, panjang: 800, luas: 8800, keterangan: 'Lereng '},
+            {no: 579, start: 466150, end: 466350, jalur: 'B', lebar: 11, panjang: 200, luas: 2200, keterangan: 'Lereng'},
+            {no: 580, start: 464180, end: 464350, jalur: 'B', lebar: 15, panjang: 170, luas: 2550, keterangan: 'Lereng '},
+            {no: 581, start: 463900, end: 464180, jalur: 'B', lebar: 4, panjang: 280, luas: 1120, keterangan: 'Lereng'},
+            {no: 582, start: 462200, end: 462750, jalur: 'B', lebar: 7, panjang: 550, luas: 3850, keterangan: 'Lereng '},
+            {no: 583, start: 459600, end: 460500, jalur: 'B', lebar: 11, panjang: 900, luas: 9900, keterangan: 'Lereng '},
+            {no: 584, start: 491200, end: 492000, jalur: 'B', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 585, start: 485000, end: 485400, jalur: 'B', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 586, start: 484550, end: 484850, jalur: 'B', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 587, start: 483450, end: 484400, jalur: 'B', lebar: 1.5, panjang: 950, luas: 1425, keterangan: 'Saluran DS 4'},
+            {no: 588, start: 483300, end: 484000, jalur: 'B', lebar: 3.5, panjang: 700, luas: 2450, keterangan: 'Saluran DS 4 Akses Boyolali'},
+            {no: 590, start: 483400, end: 483600, jalur: 'B', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 591, start: 481600, end: 483000, jalur: 'B', lebar: 1.5, panjang: 1400, luas: 2100, keterangan: 'Saluran DS 4'},
+            {no: 592, start: 480000, end: 480650, jalur: 'B', lebar: 1.5, panjang: 650, luas: 975, keterangan: 'Saluran DS 4'},
+            {no: 593, start: 478250, end: 479600, jalur: 'B', lebar: 1.5, panjang: 1350, luas: 2025, keterangan: 'Saluran DS 4'},
+            {no: 594, start: 477700, end: 478200, jalur: 'B', lebar: 1.5, panjang: 500, luas: 750, keterangan: 'Saluran DS 4'},
+            {no: 595, start: 476750, end: 477650, jalur: 'B', lebar: 1.5, panjang: 900, luas: 1350, keterangan: 'Saluran DS 4'},
+            {no: 596, start: 475700, end: 476650, jalur: 'B', lebar: 1.5, panjang: 950, luas: 1425, keterangan: 'Saluran DS 4'},
+            {no: 597, start: 474950, end: 475100, jalur: 'B', lebar: 1.5, panjang: 150, luas: 225, keterangan: 'Saluran DS 4'},
+            {no: 598, start: 474350, end: 474750, jalur: 'B', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 599, start: 472900, end: 474250, jalur: 'B', lebar: 1.5, panjang: 1350, luas: 2025, keterangan: 'Saluran DS 4'},
+            {no: 600, start: 472200, end: 472600, jalur: 'B', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 601, start: 471200, end: 471900, jalur: 'B', lebar: 1.5, panjang: 700, luas: 1050, keterangan: 'Saluran DS 4'},
+            {no: 602, start: 469000, end: 470600, jalur: 'B', lebar: 1.5, panjang: 1600, luas: 2400, keterangan: 'Saluran DS 4'},
+            {no: 603, start: 468000, end: 469600, jalur: 'B', lebar: 1.5, panjang: 1600, luas: 2400, keterangan: 'Saluran DS 4'},
+            {no: 604, start: 467800, end: 468000, jalur: 'B', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 605, start: 466100, end: 467250, jalur: 'B', lebar: 1.5, panjang: 1150, luas: 1725, keterangan: 'Saluran DS 4'},
+            {no: 606, start: 463850, end: 465150, jalur: 'B', lebar: 1.5, panjang: 1300, luas: 1950, keterangan: 'Saluran DS 4'},
+            {no: 607, start: 462800, end: 463600, jalur: 'B', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 608, start: 462200, end: 462800, jalur: 'B', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 609, start: 461000, end: 461700, jalur: 'B', lebar: 1.5, panjang: 700, luas: 1050, keterangan: 'Saluran DS 4'},
+            {no: 610, start: 459800, end: 461000, jalur: 'B', lebar: 1.5, panjang: 1200, luas: 1800, keterangan: 'Saluran DS 4'},
+            {no: 611, start: 459600, end: 460650, jalur: 'A', lebar: 1.5, panjang: 1050, luas: 1575, keterangan: 'Saluran DS 4'},
+            {no: 612, start: 460800, end: 461000, jalur: 'A', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 613, start: 462200, end: 463200, jalur: 'A', lebar: 1.5, panjang: 1000, luas: 1500, keterangan: 'Saluran DS 4'},
+            {no: 614, start: 463900, end: 464350, jalur: 'A', lebar: 1.5, panjang: 450, luas: 675, keterangan: 'Saluran DS 4'},
+            {no: 615, start: 464400, end: 465100, jalur: 'A', lebar: 1.5, panjang: 700, luas: 1050, keterangan: 'Saluran DS 4'},
+            {no: 616, start: 466150, end: 467250, jalur: 'A', lebar: 1.5, panjang: 1100, luas: 1650, keterangan: 'Saluran DS 4'},
+            {no: 617, start: 467800, end: 468600, jalur: 'A', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 618, start: 468850, end: 469100, jalur: 'A', lebar: 1.5, panjang: 250, luas: 375, keterangan: 'Saluran DS 4'},
+            {no: 619, start: 469150, end: 469250, jalur: 'A', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 620, start: 469700, end: 470500, jalur: 'A', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 621, start: 471200, end: 471900, jalur: 'A', lebar: 1.5, panjang: 700, luas: 1050, keterangan: 'Saluran DS 4'},
+            {no: 622, start: 472200, end: 472650, jalur: 'A', lebar: 1.5, panjang: 450, luas: 675, keterangan: 'Saluran DS 4'},
+            {no: 623, start: 472800, end: 474150, jalur: 'A', lebar: 1.5, panjang: 1350, luas: 2025, keterangan: 'Saluran DS 4'},
+            {no: 624, start: 474300, end: 474700, jalur: 'A', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 625, start: 475000, end: 475200, jalur: 'A', lebar: 1.5, panjang: 200, luas: 300, keterangan: 'Saluran DS 4'},
+            {no: 626, start: 475500, end: 475600, jalur: 'A', lebar: 1.5, panjang: 100, luas: 150, keterangan: 'Saluran DS 4'},
+            {no: 627, start: 475700, end: 476700, jalur: 'A', lebar: 1.5, panjang: 1000, luas: 1500, keterangan: 'Saluran DS 4'},
+            {no: 628, start: 476750, end: 479100, jalur: 'A', lebar: 1.5, panjang: 2350, luas: 3525, keterangan: 'Saluran DS 4'},
+            {no: 629, start: 479200, end: 480000, jalur: 'A', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'},
+            {no: 630, start: 480100, end: 480700, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 631, start: 481400, end: 481800, jalur: 'A', lebar: 1.5, panjang: 400, luas: 600, keterangan: 'Saluran DS 4'},
+            {no: 632, start: 481800, end: 482400, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 633, start: 482450, end: 483050, jalur: 'A', lebar: 1.5, panjang: 600, luas: 900, keterangan: 'Saluran DS 4'},
+            {no: 636, start: 483400, end: 484450, jalur: 'A', lebar: 1.5, panjang: 1050, luas: 1575, keterangan: 'Saluran DS 4'},
+            {no: 637, start: 484600, end: 484900, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 638, start: 485000, end: 485300, jalur: 'A', lebar: 1.5, panjang: 300, luas: 450, keterangan: 'Saluran DS 4'},
+            {no: 639, start: 491200, end: 492000, jalur: 'A', lebar: 1.5, panjang: 800, luas: 1200, keterangan: 'Saluran DS 4'}
         ];
 
         function calculateArea() {
-            const startKm = parseInt(document.getElementById('startKm').value);
-            const endKm = parseInt(document.getElementById('endKm').value);
-            
+            const startKmInput = parseInt(document.getElementById('startKm').value);
+            const endKmInput = parseInt(document.getElementById('endKm').value);
+            const jalur = document.getElementById('jalur').value;
+
             // Validasi input
-            if (isNaN(startKm) || isNaN(endKm)) {
+            if (isNaN(startKmInput) || isNaN(endKmInput)) {
                 showError('Mohon masukkan nilai KM yang valid!');
                 return;
             }
             
-            if (startKm >= endKm) {
+            if (startKmInput >= endKmInput) {
                 showError('KM Awal harus lebih kecil dari KM Akhir!');
                 return;
             }
             
-            // Cari data yang overlap dengan range yang diminta
-            const relevantData = findRelevantData(startKm, endKm);
+            // Buat segmentasi berdasarkan input range dan database
+            const segments = createSegments(startKmInput, endKmInput, jalur);
             
-            if (relevantData.length === 0) {
-                showError(`Tidak ada data rumput pada range KM ${startKm} - ${endKm}`);
+            if (segments.length === 0) {
+                showError(`Tidak ada data rumput pada range KM ${formatKmDisplay(startKmInput)} - ${formatKmDisplay(endKmInput)}`);
                 return;
             }
             
-            // Hitung total statistik
-            const stats = calculateStats(relevantData, startKm, endKm);
+            // Hitung statistik
+            const stats = calculateStats(segments, startKmInput, endKmInput);
             
             // Tampilkan hasil
-            displayResults(stats, relevantData, startKm, endKm);
+            displayResults(stats, segments, startKmInput, endKmInput);
         }
-        
-        function findRelevantData(startKm, endKm) {
-            return grassData.filter(data => {
-                // Cek apakah ada overlap antara range input dengan range data
-                return !(data.end <= startKm || data.start >= endKm);
-            }).map(data => {
-                // Hitung panjang yang benar-benar termasuk dalam range
-                const actualStart = Math.max(data.start, startKm);
-                const actualEnd = Math.min(data.end, endKm);
-                const actualLength = actualEnd - actualStart;
-                const actualArea = actualLength * data.lebar;
-                
-                return {
-                    ...data,
-                    actualStart,
-                    actualEnd,
-                    actualLength,
-                    actualArea
-                };
+
+        function createSegments(startKm, endKm, jalur) {
+            // Cari semua data yang overlap dengan range input
+            const relevantData = grassData.filter(data => {
+                const matchJalur = data.jalur === jalur;
+                const hasOverlap = !(data.end <= startKm || data.start >= endKm);
+                return matchJalur && hasOverlap;
             });
+            
+            if (relevantData.length === 0) return [];
+            
+            // Debug: tampilkan data yang ditemukan
+            console.log('Relevant data found:', relevantData);
+            
+            // Buat segmen untuk setiap data yang overlap
+            const segments = [];
+            
+            relevantData.forEach((data, index) => {
+                // Hitung area overlap antara data dan range input
+                const overlapStart = Math.max(data.start, startKm);
+                const overlapEnd = Math.min(data.end, endKm);
+                
+                // Pastikan ada overlap yang valid
+                if (overlapStart < overlapEnd) {
+                    const panjang = overlapEnd - overlapStart;
+                    const luas = data.lebar * panjang;
+                    
+                    segments.push({
+                        start: overlapStart,
+                        end: overlapEnd,
+                        jalur: jalur,
+                        lebar: data.lebar,
+                        panjang: panjang,
+                        luas: luas,
+                        keterangan: data.keterangan,
+                        originalData: data // Untuk referensi
+                    });
+                    
+                    console.log(`Added segment ${index + 1}: ${overlapStart}-${overlapEnd}, panjang: ${panjang}m, lebar: ${data.lebar}m, luas: ${luas}m², keterangan: ${data.keterangan}`);
+                }
+            });
+            
+            // Sort segmen berdasarkan start position
+            segments.sort((a, b) => a.start - b.start);
+            
+            console.log('Final segments:', segments);
+            return segments;
         }
-        
-        function calculateStats(data, startKm, endKm) {
-            const totalLength = data.reduce((sum, item) => sum + item.actualLength, 0);
-            const totalArea = data.reduce((sum, item) => sum + item.actualArea, 0);
-            const avgWidth = data.length > 0 ? 
-                data.reduce((sum, item) => sum + (item.lebar * item.actualLength), 0) / totalLength : 0;
+
+        function calculateStats(segments, startKm, endKm) {
+            // Total panjang input range (selalu tetap)
+            const inputRangeLength = endKm - startKm;
+            
+            // Total luas dari semua segmen (bisa overlap, jadi dijumlahkan)
+            const totalArea = segments.reduce((sum, segment) => sum + segment.luas, 0);
+            
+            // Rata-rata lebar berdasarkan weighted average dari semua segmen
+            const totalWeightedWidth = segments.reduce((sum, segment) => sum + (segment.lebar * segment.panjang), 0);
+            const totalSegmentLength = segments.reduce((sum, segment) => sum + segment.panjang, 0);
+            const avgWidth = totalSegmentLength > 0 ? totalWeightedWidth / totalSegmentLength : 0;
             
             return {
-                totalLength: Math.round(totalLength),
-                totalArea: Math.round(totalArea * 100) / 100, // 2 decimal places
+                totalLength: inputRangeLength, // Selalu panjang range input
+                totalArea: Math.round(totalArea * 100) / 100,
                 avgWidth: Math.round(avgWidth * 100) / 100,
-                dataPoints: data.length,
-                rangeLength: endKm - startKm
+                dataPoints: segments.length,
+                rangeLength: inputRangeLength,
+                segmentTotalLength: totalSegmentLength // Untuk debug
             };
         }
-        
-        function displayResults(stats, data, startKm, endKm) {
+
+        // Fungsi untuk format tampilan KM
+        function formatKmDisplay(kmInput) {
+            const km = Math.floor(kmInput / 1000);
+            const meter = kmInput % 1000;
+            return `${km}+${meter.toString().padStart(3, '0')}`;
+        }
+
+        function displayResults(stats, segments, startKmInput, endKmInput) {
             // Update statistik
             document.getElementById('totalLength').textContent = stats.totalLength.toLocaleString();
             document.getElementById('totalArea').textContent = stats.totalArea.toLocaleString();
             document.getElementById('avgWidth').textContent = stats.avgWidth.toFixed(1);
             document.getElementById('dataPoints').textContent = stats.dataPoints;
             document.getElementById('rangeInfo').textContent = 
-                `Range: KM ${startKm.toLocaleString()} - ${endKm.toLocaleString()} (${stats.rangeLength.toLocaleString()} m)`;
+                `Range: KM ${formatKmDisplay(startKmInput)} - ${formatKmDisplay(endKmInput)} (${stats.rangeLength.toLocaleString()} m)`;
             
             // Update tabel
             const tableBody = document.getElementById('dataTableBody');
             tableBody.innerHTML = '';
             
-            data.forEach((item, index) => {
+            segments.forEach((segment, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${item.actualStart.toLocaleString()}</td>
-                    <td>${item.actualEnd.toLocaleString()}</td>
-                    <td>${item.jalur}</td>
-                    <td>${item.lebar}</td>
-                    <td>${item.actualLength.toLocaleString()}</td>
-                    <td>${item.actualArea.toLocaleString()}</td>
-                    <td>${item.keterangan}</td>
+                    <td>${formatKmDisplay(segment.start)}</td>
+                    <td>${formatKmDisplay(segment.end)}</td>
+                    <td>${segment.jalur}</td>
+                    <td>${segment.lebar}</td>
+                    <td>${segment.panjang.toLocaleString()}</td>
+                    <td>${segment.luas.toLocaleString()}</td>
+                    <td>${segment.keterangan}</td>
                 `;
-                
-                if (item.actualStart > item.start || item.actualEnd < item.end) {
-                    row.classList.add('highlight');
-                }
                 
                 tableBody.appendChild(row);
             });
@@ -678,14 +1082,14 @@
             // Scroll ke hasil
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
-        
+
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.innerHTML = `<div class="error">❌ ${message}</div>`;
             errorDiv.style.display = 'block';
             document.getElementById('results').style.display = 'none';
         }
-        
+
         // Event listener untuk Enter key
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('startKm').addEventListener('keypress', function(e) {
